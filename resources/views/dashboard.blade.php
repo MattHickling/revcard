@@ -7,7 +7,7 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
 
-    <a class="btn btn-warning" href="{{ route('add-stack', ['id' => 1]) }}">Add A New Stack</a>
+    <a class="btn btn-warning" href="{{ route('add-stack', ['id' => auth()->id()]) }}">Add A New Stack</a>
 
   
     <div class="py-12">

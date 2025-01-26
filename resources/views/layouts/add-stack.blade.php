@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Add A New Stack') }}
+            {{ __('What are you revising?') }}
         </h2>
     </x-slot>
 
@@ -36,11 +36,9 @@
                             <label for="topic" class="block text-sm font-medium text-gray-700">Topic</label>
                             <select id="topic" name="topic" class="form-select mt-1 block w-full" required>
                                 <option value="">Select Topic</option>
-                                @foreach(config('preferences.topics') as $topic)
-                                    <option value="{{ $topic }}" {{ old('topic') == $topic ? 'selected' : '' }}>{{ $topic }}</option>
-                                @endforeach
                             </select>
                         </div>
+                        
 
                         <div class="mb-4">
                             <label for="exam_board" class="block text-sm font-medium text-gray-700">Exam Board</label>
@@ -65,3 +63,53 @@
         </div>
     </div>
 </x-app-layout>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const topicsBySubject = {
+            'Maths': @json(config('preferences.topics.maths')),
+            'Science': @json(config('preferences.topics.science')),
+            'History': @json(config('preferences.topics.history')),
+            'Geography': @json(config('preferences.topics.geography')),
+            'Computing & ICT': @json(config('preferences.topics.computing_ict')),
+        };
+
+        const subjectSelect = document.getElementById('subject');
+        const topicSelect = document.getElementById('topic');
+
+        subjectSelect.addEventListener('change', function () {
+            topicSelect.innerHTML = '<option value="">Select Topic</option>';
+
+            const selectedSubject = subjectSelect.value;
+
+            if (selectedSubject && topicsBySubject[selectedSubject]) {
+                topicsBySubject[selectedSubject].forEach(function (topic) {
+                    const option = document.createElement('option');
+                    option.value = topic;
+                    option.textContent = topic;
+                    topicSelect.appendChild(option);
+                });
+            }
+        });
+    });
+    document.addEventListener('DOMContentLoaded', function () {
+        const examBoardsBySubject = @json(config('preferences.exam_boards_by_subject'));
+
+        const subjectSelect = document.getElementById('subject');
+        const examBoardSelect = document.getElementById('exam_board');
+
+        subjectSelect.addEventListener('change', function () {
+            examBoardSelect.innerHTML = '<option value="">Select Exam Board</option>';
+
+            const selectedSubject = subjectSelect.value;
+
+            if (selectedSubject && examBoardsBySubject[selectedSubject]) {
+                examBoardsBySubject[selectedSubject].forEach(function (board) {
+                    const option = document.createElement('option');
+                    option.value = board;
+                    option.textContent = board;
+                    examBoardSelect.appendChild(option);
+                });
+            }
+        });
+    });
+</script>
