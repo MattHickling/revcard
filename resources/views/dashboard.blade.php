@@ -5,6 +5,11 @@
         </h2>
     </x-slot>
 
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+    <a class="btn btn-warning" href="{{ route('add-stack', ['id' => 1]) }}">Add A New Stack</a>
+
+  
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
@@ -14,4 +19,7 @@
             </div>
         </div>
     </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </x-app-layout>
