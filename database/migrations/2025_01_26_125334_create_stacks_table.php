@@ -14,12 +14,15 @@ return new class extends Migration
         Schema::create('stacks', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('stack_id');  
+            $table->unsignedBigInteger('user_id'); 
+            $table->boolean('open')->default(true); 
             $table->string('year_in_school');
             $table->string('subject');
             $table->string('topic');
             $table->string('exam_board');
             $table->text('question_prompt');
             $table->timestamps();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
