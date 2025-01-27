@@ -4,7 +4,7 @@
             {{ __('What are you revising?') }}
         </h2>
     </x-slot>
-
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
@@ -66,11 +66,33 @@
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const topicsBySubject = {
+            'English Literature': @json(config('preferences.topics.english_literature')),
+            'English Language': @json(config('preferences.topics.english_language')),
             'Maths': @json(config('preferences.topics.maths')),
-            'Science': @json(config('preferences.topics.science')),
+            'Biology': @json(config('preferences.topics.biology')),
+            'Chemistry': @json(config('preferences.topics.chemistry')),
+            'Physics': @json(config('preferences.topics.physics')),
             'History': @json(config('preferences.topics.history')),
             'Geography': @json(config('preferences.topics.geography')),
-            'Computing & ICT': @json(config('preferences.topics.computing_ict')),
+            'Spanish': @json(config('preferences.topics.spanish')),
+            'French': @json(config('preferences.topics.french')),
+            'German': @json(config('preferences.topics.german')),
+            'Italian': @json(config('preferences.topics.italian')),
+            'Art': @json(config('preferences.topics.art')),
+            'Design Technology': @json(config('preferences.topics.design_technology')),
+            'Physical Education': @json(config('preferences.topics.physical_education')),
+            'Religious Studies': @json(config('preferences.topics.religious_studies')),
+            'Music': @json(config('preferences.topics.music')),
+            'Drama': @json(config('preferences.topics.drama')),
+            'Business Studies': @json(config('preferences.topics.business_studies')),
+            'Psychology': @json(config('preferences.topics.psychology')),
+            'Sociology': @json(config('preferences.topics.sociology')),
+            'Philosophy': @json(config('preferences.topics.philosophy')),
+            'Economics': @json(config('preferences.topics.economics')),
+            'Health & Social Care': @json(config('preferences.topics.health_and_social_care')),
+            'ICT': @json(config('preferences.topics.ict')),
+            'Media Studies': @json(config('preferences.topics.media_studies')),
+            'Food Technology': @json(config('preferences.topics.food_technology')),
         };
 
         const subjectSelect = document.getElementById('subject');
@@ -91,6 +113,7 @@
             }
         });
     });
+
     document.addEventListener('DOMContentLoaded', function () {
         const examBoardsBySubject = @json(config('preferences.exam_boards_by_subject'));
 
@@ -112,4 +135,5 @@
             }
         });
     });
+
 </script>

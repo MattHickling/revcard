@@ -33,7 +33,7 @@ class StackController extends Controller
 
     private function generateQuestionPrompt($data)
     {
-        return "Please act as a {$data->year_in_school} {$data->subject} teacher and write 10 multiple-choice questions covering key stage 3 {$data->topic} topics, aligned with the {$data->exam_board} GCSE Mathematics specification. Ensure the questions are of varying difficulty. Provide four answer options for each question, with one correct answer and three plausible distractors.";
+        return "Please act as a {$data->year_in_school} {$data->subject} teacher and write 10 multiple-choice questions covering key stage 3 {$data->topic} topics, aligned with the {$data->exam_board} GCSE {$data->subject} specification. Ensure the questions are of varying difficulty. Provide four answer options for each question, with one correct answer and three plausible distractors.";
     }
     
     public function showStacks()
