@@ -9,6 +9,10 @@ class StackController extends Controller
 {
     public function generateQuestion(Request $request, $id)
     {
+        $user = User::find(1);
+        $user->assignRole('Admin');
+        $user->givePermissionTo('edit users');
+        
         $request->validate([
             'year_in_school' => 'required|string',
             'subject' => 'required|string',

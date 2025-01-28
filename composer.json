@@ -10,7 +10,8 @@
         "guzzlehttp/guzzle": "^7.9",
         "laravel/breeze": "^2.3",
         "laravel/framework": "^11.31",
-        "laravel/tinker": "^2.9"
+        "laravel/tinker": "^2.9",
+        "spatie/laravel-permission": "^6.10"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.14",
