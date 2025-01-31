@@ -20,7 +20,7 @@
                     <h5 class="card-title">{{ $stack->subject }} - {{ $stack->topic }}</h5>
                     <p class="card-text">Year: {{ $stack->year_in_school }}</p>
                     <p class="card-text">Exam Board: {{ $stack->exam_board }}</p>
-                    <a href="#" class="btn btn-primary">View Stack</a>
+                    <a href="{{ route('view-stack', ['stack' => $stack->id]) }}" class="btn btn-primary">View Stack</a>
                 </div>
             </div>
         @endforeach

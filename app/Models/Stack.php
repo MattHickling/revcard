@@ -16,4 +16,9 @@ class Stack extends Model
         'open',
         'question_prompt',
     ];
+    
+    public function questions()
+    {
+        return $this->hasMany(Question::class);
+    }
 }

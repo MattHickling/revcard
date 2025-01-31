@@ -40,16 +40,18 @@ class StackController extends Controller
         return "Please act as a {$data->year_in_school} {$data->subject} teacher and write 10 multiple-choice questions covering key stage 3 {$data->topic} topics, aligned with the {$data->exam_board} GCSE {$data->subject} specification. Ensure the questions are of varying difficulty. Provide four answer options for each question, with one correct answer and three plausible distractors.";
     }
     
-    public function showStacks()
-    {
-        $user = auth()->user();
-        return view('stacks.index', compact('openStacks'));
-    }
     public function showForm($id)
     {
         return view('layouts.add-stack', ['id' => $id]);
     }
 
+    public function show($id)
+    {
+        $stack = Stack::with('questions')->findOrFail($id);
+
+        return view('stacks.show', compact('stack'));
+    }
+    
 
 
 }
