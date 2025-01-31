@@ -10,7 +10,7 @@
         <p class="text-center"><strong>Year:</strong> {{ $stack->year_in_school }} | <strong>Exam Board:</strong> {{ $stack->exam_board }}</p>
 
         <div class="text-center mt-3">
-            <a href="{{ route('stacks.index') }}" class="btn btn-secondary">Back to Stacks</a>
+            <a href="{{ route('view-stack', ['stack' => $stack->id]) }}" class="btn btn-secondary">Back to Stacks</a>
         </div>
 
         @if($stack->questions->isNotEmpty())
