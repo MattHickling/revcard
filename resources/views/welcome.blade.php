@@ -22,32 +22,36 @@
     <body class="font-sans antialiased dark:bg-black dark:text-white/50">
             <header class="grid grid-cols-2 items-center gap-2 py-10 lg:grid-cols-3">
                 @if (Route::has('login'))
-                    <nav class="-mx-3 flex flex-1 justify-end">
+                <div class="flex justify-center items-center min-h-screen bg-gray-100 dark:bg-gray-900">
+                    <nav class="flex flex-col gap-6 text-center">
                         @auth
                             <a
                                 href="{{ url('/dashboard') }}"
-                                class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
+                                class="px-6 py-3 text-lg font-semibold text-white bg-[#FF2D20] rounded-lg shadow-md transition duration-300 hover:bg-[#e62a1e] focus:outline-none focus:ring-4 focus:ring-red-300 dark:focus:ring-red-600"
                             >
                                 Dashboard
                             </a>
                         @else
                             <a
                                 href="{{ route('login') }}"
-                                class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
+                                class="px-6 py-3 text-lg font-semibold text-black bg-blue-600 rounded-lg shadow-md transition duration-300 hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-600"
                             >
                                 Log in
                             </a>
-
+                
                             @if (Route::has('register'))
                                 <a
                                     href="{{ route('register') }}"
-                                    class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
+                                    class="px-6 py-3 text-lg font-semibold text-black bg-green-600 rounded-lg shadow-md transition duration-300 hover:bg-green-700 focus:outline-none focus:ring-4 focus:ring-green-300 dark:focus:ring-green-600"
                                 >
                                     Register
                                 </a>
                             @endif
                         @endauth
                     </nav>
+                </div>
+                
+                
                 @endif
             </header>
     </body>

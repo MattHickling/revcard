@@ -5,13 +5,10 @@
         </h2>
     </x-slot>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
 <div class="text-center">
     <a class="btn btn-success mt-2" href="{{ route('add-stack', ['id' => auth()->id()]) }}">Add A New Stack</a>
 </div>
 
-  
-    
 
     @if($openStacks->isNotEmpty())
         @foreach($openStacks as $stack)
@@ -39,6 +36,4 @@
         </div>
     </div>
 
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </x-app-layout>
