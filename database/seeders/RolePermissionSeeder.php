@@ -18,7 +18,8 @@ class RolePermissionSeeder extends Seeder
             'take test',
             'create tests',    
             'view tests',      
-            'attempt tests',   
+            'attempt tests', 
+            'edit users',   
         ];
 
         foreach ($permissions as $permission) {

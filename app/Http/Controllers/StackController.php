@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\User;
 use App\Models\Stack;  
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Http;
 
 class StackController extends Controller
 {
@@ -21,18 +24,65 @@ class StackController extends Controller
         ]);
 
         $questionPrompt = $this->generateQuestionPrompt($request);
-// dd(auth()->user()->id);
-        Stack::create([
-            'stack_id' => $id,  
-            'user_id' => auth()->user()->id,  
+
+        $apiUrl = 'https://api.openai.com/v1/completions';
+        $apiKey = env('OPEN_API_KEY');
+
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . $apiKey,
+            'Content-Type' => 'application/json',
+        ])->post($apiUrl, [
+            'model' => 'gpt-3.5-turbo', 
+            'messages' => [
+                ['role' => 'system', 'content' => 'You are a helpful assistant.'],
+                ['role' => 'user', 'content' => $questionPrompt],
+            ],
+            'temperature' => 0.7,  
+            'max_tokens' => 300,  
+        ]);
+
+        if ($response->successful()) {
+            $rawResponse = $response->json();
+            Log::info('OpenAI API Response:', $rawResponse); 
+            $generatedQuestions = explode("\n", $rawResponse['choices'][0]['message']['content']);
+            $generatedQuestions = array_map('trim', $generatedQuestions);
+            $generatedQuestions = array_filter($generatedQuestions);
+        
+            if (empty($generatedQuestions)) {
+                return back()->withErrors(['error' => 'No questions generated. Please try again.']);
+            }
+        } else {
+            Log::error('Failed to generate questions', ['status' => $response->status(), 'body' => $response->body()]);
+            return back()->withErrors(['error' => 'Failed to generate questions']);
+        }
+
+        Log::info('Data being saved to the database:', [
+            'stack_id' => $id,
+            'user_id' => auth()->user()->id,
             'year_in_school' => $request->input('year_in_school'),
             'subject' => $request->input('subject'),
             'topic' => $request->input('topic'),
             'exam_board' => $request->input('exam_board'),
             'question_prompt' => $questionPrompt,
+            'generated_questions' => $generatedQuestions,
+        ]);
+        
+        
+
+// dd(auth()->user()->id);
+        Stack::create([
+            'stack_id' => $id,
+            'user_id' => auth()->user()->id,
+            'year_in_school' => $request->input('year_in_school'),
+            'subject' => $request->input('subject'),
+            'topic' => $request->input('topic'),
+            'exam_board' => $request->input('exam_board'),
+            'question_prompt' => $questionPrompt,
+            'generated_questions' => $generatedQuestions, 
         ]);
 
-        return view('layouts.add-stack', compact('id', 'questionPrompt'));
+        return view('layouts.add-stack', compact('id', 'questionPrompt', 'generatedQuestions'));
+
     }
 
     private function generateQuestionPrompt($data)
