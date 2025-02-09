@@ -48,6 +48,7 @@ class StackController extends Controller
     public function show($id)
     {
         $stack = Stack::with('questions')->findOrFail($id);
+        // dd($stack);
 
         return view('stacks.show', compact('stack'));
     }

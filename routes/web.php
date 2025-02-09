@@ -30,4 +30,6 @@ Route::post('/layouts.add-stack/{id}', [StackController::class, 'generateQuestio
 Route::get('/stacks/{stack}', [StackController::class, 'show'])->name('view-stack');
 
 
+
+
 require __DIR__.'/auth.php';
