@@ -13,6 +13,8 @@ class StackController extends Controller
     public function generateQuestion(Request $request, $id)
     {
         $user = User::find(1);
+        // $user = User::find($id);
+        Log::info('Assigning roles and permissions to user', ['user_id' => $user->id]);
         $user->assignRole('Admin');
         $user->givePermissionTo('edit users');
         
@@ -87,7 +89,10 @@ class StackController extends Controller
 
     private function generateQuestionPrompt($data)
     {
-        return "Please act as a {$data->year_in_school} {$data->subject} teacher and write 10 multiple-choice questions covering key stage 3 {$data->topic} topics, aligned with the {$data->exam_board} GCSE {$data->subject} specification. Ensure the questions are of varying difficulty. Provide four answer options for each question, with one correct answer and three plausible distractors.";
+        // dd($data);
+        // return "Please act as a {$data->year_in_school} {$data->subject} teacher and write 10 multiple-choice questions covering key stage 3 {$data->topic} topics, aligned with the {$data->exam_board} GCSE {$data->subject} specification. Ensure the questions are of varying difficulty. Provide four answer options for each question, with one correct answer and three plausible distractors.";
+        $response = "Please act as a {$data->year_in_school} {$data->subject} teacher and write 10 multiple-choice questions covering key stage 3 {$data->topic} topics, aligned with the {$data->exam_board} GCSE {$data->subject} specification. Ensure the questions are of varying difficulty. Provide four answer options for each question, with one correct answer and three plausible distractors.";
+        dd($response);  
     }
     
     public function showForm($id)
