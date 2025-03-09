@@ -112,8 +112,27 @@ class StackController extends Controller
 
     private function generateQuestionPrompt($request)
     {
-        $prompt = "Please act as a {$request->input('year_in_school')} {$request->input('subject')} teacher and write 10 multiple-choice questions covering key stage 3 {$request->input('topic')} topics, aligned with the {$request->input('exam_board')} GCSE {$request->input('subject')} specification. Ensure the questions are of varying difficulty. Provide four answer options for each question, with one correct answer and three plausible distractors. This response cannot be more than 50 words. Can you identify the answers by adding A: B: C: D: infront of each multiple choice answer. And CORRECT ANSWER after the correct answer.";
+        $prompt = "Please act as a {$request->input('year_in_school')} {$request->input('subject')} teacher and write 10 multiple-choice questions covering key stage 3 {$request->input('topic')} topics, aligned with the {$request->input('exam_board')} GCSE {$request->input('subject')} specification. 
+        Ensure the questions are of varying difficulty. Do not add anymore information than is required.
+
+        Format the response like this:
+        QUESTION: [The question text]
+        A: [Option A]
+        B: [Option B]
+        C: [Option C]
+        D: [Option D]
+        CORRECT ANSWER: [A/B/C/D]
+        
+        Example:
+        QUESTION: What is the capital of France?
+        A: London
+        B: Paris
+        C: Berlin
+        D: Madrid
+        CORRECT ANSWER: B";
+        
         Log::info('Generated Question Prompt:', ['prompt' => $prompt]);
+
         return $prompt;
     }
 
@@ -146,16 +165,32 @@ class StackController extends Controller
                 'correct_answer' => '',
             ];
         }
-    
-        $question = array_shift($questionSet);
-    
-        $options = array_slice($questionSet, 0, 4);
-    
-        $options = array_map(function($option) {
-            return preg_replace('/^[A-D]:\s/', '', $option);
-        }, $options);
-    
-        $correctAnswer = $this->getCorrectAnswer($questionSet);
+
+        $question = '';
+        $options = [];
+        $correctAnswer = '';
+
+        foreach ($questionSet as $line) {
+            if (preg_match('/^QUESTION:\s*(.+)$/', $line, $matches)) {
+                $question = $matches[1];
+            } elseif (preg_match('/^[A-D]:\s*(.+)$/', $line, $matches)) {
+                $options[] = $matches[1];
+            } elseif (preg_match('/^CORRECT ANSWER:\s*([A-D])$/', $line, $matches)) {
+                $correctAnswer = $matches[1];
+            }
+        }
+
+        if (count($options) !== 4 || empty($question) || empty($correctAnswer)) {
+            Log::error('Invalid question format detected', ['question_set' => $questionSet]);
+            return [
+                'question' => null,
+                'option_1' => '',
+                'option_2' => '',
+                'option_3' => '',
+                'option_4' => '',
+                'correct_answer' => '',
+            ];
+        }
 
         return [
             'question' => $question,
@@ -166,6 +201,7 @@ class StackController extends Controller
             'correct_answer' => $correctAnswer,
         ];
     }
+
     
     private function getCorrectAnswer($questionSet)
     {
@@ -175,7 +211,7 @@ class StackController extends Controller
             }
         }
 
-        return 'A';
+        return null;
     }
 
 

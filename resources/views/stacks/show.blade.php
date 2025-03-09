@@ -46,19 +46,34 @@
             @foreach($stack->questions as $question)
                 <div class="card mt-3">
                     <div class="card-body">
-                        <h5 class="card-title">{{ $question->text }}</h5>
-                        <ul>
-                            <li class="answer" data-answer="A" data-correct="{{ $question->correct_answer == 'A' ? 'true' : 'false' }}">{{ $question->option_1 }}</li>
-                            <li class="answer" data-answer="B" data-correct="{{ $question->correct_answer == 'B' ? 'true' : 'false' }}">{{ $question->option_2 }}</li>
-                            <li class="answer" data-answer="C" data-correct="{{ $question->correct_answer == 'C' ? 'true' : 'false' }}">{{ $question->option_3 }}</li>
-                            <li class="answer" data-answer="D" data-correct="{{ $question->correct_answer == 'D' ? 'true' : 'false' }}">{{ $question->option_4 }}</li>
+                        <h5 class="card-title"><strong>Question:</strong></h5>
+                        <p>{{ $question->text }}</p>
+
+                        <ul class="answer-list">
+                            <li class="answer" data-answer="A" data-correct="{{ $question->correct_answer == 'A' ? 'true' : 'false' }}">
+                                <strong>A:</strong> {{ $question->option_1 }}
+                            </li>
+                            <li class="answer" data-answer="B" data-correct="{{ $question->correct_answer == 'B' ? 'true' : 'false' }}">
+                                <strong>B:</strong> {{ $question->option_2 }}
+                            </li>
+                            <li class="answer" data-answer="C" data-correct="{{ $question->correct_answer == 'C' ? 'true' : 'false' }}">
+                                <strong>C:</strong> {{ $question->option_3 }}
+                            </li>
+                            <li class="answer" data-answer="D" data-correct="{{ $question->correct_answer == 'D' ? 'true' : 'false' }}">
+                                <strong>D:</strong> {{ $question->option_4 }}
+                            </li>
                         </ul>
+
+                        <div class="correct-answer mt-3" style="display: none;">
+                            ✅ Correct Answer: <strong>{{ $question->correct_answer }}</strong>
+                        </div>
                     </div>
                 </div>
             @endforeach
         @else
             <div class="alert alert-info mt-3">No questions available for this stack.</div>
         @endif
+
     </div>
 
     <script>
