@@ -104,9 +104,7 @@ class StackController extends Controller
             'questionPrompt' => $questionPrompt,
             'generatedQuestions' => $generatedQuestions,
             'correct_answer' => $parsedQuestion['correct_answer'], 
-        ]);
-        
-        
+        ]); 
     }
     
 

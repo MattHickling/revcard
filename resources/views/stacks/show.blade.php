@@ -11,9 +11,9 @@
         background-color: #f0f0f0;
     }
 
-    .correct-answer {
+    .answer.correct {
         color: green;
-        font-weight: normal;
+        font-weight: bold;
     }
 
     .answer.wrong {
@@ -22,7 +22,7 @@
     }
 
     .card-body {
-        background-color: #f9f9f9; 
+        background-color: #f9f9f9;
         padding: 15px;
     }
 </style>
@@ -35,17 +35,23 @@
     </x-slot>
 
     <div class="container mt-4">
-        <h3 class="text-center font-semibold text-xl text-gray-100 dark:text-gray-100 leading-tight">{{ $stack->subject }} - {{ $stack->topic }}</h3>
-        <p class="text-center font-semibold text-xl text-gray-100 dark:text-gray-100 leading-tight"><strong>Year:</strong> {{ $stack->year_in_school }} | <strong>Exam Board:</strong> {{ $stack->exam_board }}</p>
+        <h3 class="text-center font-semibold text-xl text-gray-100 dark:text-gray-100 leading-tight">
+            {{ $stack->subject }} - {{ $stack->topic }}
+        </h3>
+        <p class="text-center font-semibold text-xl text-gray-100 dark:text-gray-100 leading-tight">
+            <strong>Year:</strong> {{ $stack->year_in_school }} | <strong>Exam Board:</strong> {{ $stack->exam_board }}
+        </p>
 
         <div class="text-center mt-3">
             <a href="{{ route('dashboard', ['stack' => $stack->id]) }}" class="btn btn-secondary">Back to Stacks</a>
         </div>
 
         @if($stack->questions->isNotEmpty())
+            <meta name="csrf-token" content="{{ csrf_token() }}">
+
             @foreach($stack->questions as $question)
                 <div class="card mt-3">
-                    <div class="card-body">
+                    <div class="card-body" data-question-id="{{ $question->id }}">
                         <h5 class="card-title"><strong>Question:</strong></h5>
                         <p>{{ $question->text }}</p>
 
@@ -70,32 +76,116 @@
                     </div>
                 </div>
             @endforeach
+
+            <div class="text-center mt-4">
+                <button onclick="saveQuizResult()" class="btn btn-primary">Finish Quiz</button>
+            </div>
+
         @else
             <div class="alert alert-info mt-3">No questions available for this stack.</div>
         @endif
 
     </div>
+    <!-- Quiz Results Modal -->
+<div class="modal fade" id="quizResultsModal" tabindex="-1" aria-labelledby="quizResultsModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="quizResultsModalLabel">Quiz Results</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Correct Answers:</strong> <span id="correctCount"></span></p>
+                <p><strong>Wrong Answers:</strong> <span id="wrongCount"></span></p>
+                <p><strong>Score:</strong> <span id="scorePercentage"></span>%</p>
+            </div>
+            <div class="modal-footer">
+                <a id="reviewSummaryBtn" class="btn btn-primary" href="#">Review Summary</a>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
-    <script>
-       document.querySelectorAll('.answer').forEach(answer => {
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+        let answers = [];
+
+        document.querySelectorAll('.answer').forEach(answer => {
             answer.addEventListener('click', function() {
                 let cardBody = this.closest('.card-body');
-                let answers = cardBody.querySelectorAll('.answer');
-                
-                answers.forEach(a => a.style.pointerEvents = 'none');  
+                let questionId = cardBody.getAttribute('data-question-id');
+                let userAnswer = this.getAttribute('data-answer');
+                let correctAnswerElement = cardBody.querySelector('[data-correct="true"]');
+                let correctAnswer = correctAnswerElement ? correctAnswerElement.getAttribute('data-answer') : null;
 
-                if (this.getAttribute('data-correct') === 'true') {
-                    this.style.color = 'green';
-                    this.style.fontWeight = 'bold';
-                } else { 
-                    this.style.color = 'red';
-                    this.style.fontWeight = 'bold';
+                let isCorrect = userAnswer === correctAnswer;
+
+                answers.push({
+                    question_id: questionId,
+                    user_answer: userAnswer,
+                    correct_answer: correctAnswer,
+                    is_correct: isCorrect
+                });
+
+                cardBody.querySelectorAll('.answer').forEach(a => a.style.pointerEvents = 'none');
+
+                if (isCorrect) {
+                    this.classList.add('correct');
+                } else {
+                    this.classList.add('wrong');
+                    correctAnswerElement.classList.add('correct');
                 }
-
-                let correctAnswer = cardBody.querySelector('[data-correct="true"]');
-                correctAnswer.style.color = 'green';
-                correctAnswer.style.fontWeight = 'bold';
             });
         });
-    </script>
+
+    function saveQuizResult() {
+        if (answers.length === 0) {
+            alert('Please answer at least one question before finishing the quiz.');
+            return;
+        }
+
+        console.log("Sending the following data:", {
+            stack_id: {{ $stack->id }},
+            answers: answers
+        });
+
+        $.ajax({
+            url: '/revcard/public/quiz/save',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                stack_id: {{ $stack->id }},
+                answers: answers
+            }),
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(data) {
+                // console.log("Response from server:", data);
+                $('#correctCount').text(data.correct);
+                $('#wrongCount').text(data.wrong);
+                
+                const score = (data.correct / (data.correct + data.wrong)) * 100;
+                $('#scorePercentage').text(score.toFixed(2));
+
+                const summaryUrl = "{{ route('quiz.summary', ':attemptId') }}".replace(':attemptId', data.attempt_id);
+                $('#reviewSummaryBtn').attr('href', summaryUrl);
+
+                $('#quizResultsModal').modal('show');          
+             },
+            error: function(xhr, status, error) {
+                console.error('AJAX request failed:');
+                console.error('Status:', status);
+                console.error('Error:', error);
+                console.error('Response:', xhr.responseText);
+                alert('An error occurred while saving your quiz. Check the console for details.');
+            }
+        });
+}
+
+</script>
+
 </x-app-layout>
