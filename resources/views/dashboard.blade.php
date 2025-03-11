@@ -18,6 +18,11 @@
                     <p class="card-text">Year: {{ $stack->year_in_school }}</p>
                     <p class="card-text">Exam Board: {{ $stack->exam_board }}</p>
                     <a href="{{ route('view-stack', ['stack' => $stack->id]) }}" class="btn btn-primary">View Stack</a>
+                    <form action="{{ route('delete-stack', ['id' => $stack->id]) }}" method="POST" style="display: inline-block;" onsubmit="return confirm('Are you sure you want to delete this stack?');">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger">Delete Stack</button>
+                    </form>
                 </div>
             </div>
         @endforeach

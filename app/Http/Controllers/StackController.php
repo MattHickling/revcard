@@ -212,7 +212,14 @@ class StackController extends Controller
         return null;
     }
 
+    public function destroy($id)
+    {
+        $stack = Stack::where('id', $id);
 
+        $stack->delete();
+        return redirect()->back();
+        
+    }
 
 
 

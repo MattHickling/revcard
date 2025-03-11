@@ -31,6 +31,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/layouts.add-stack/{id}', [StackController::class, 'showForm'])->name('add-stack');
     Route::post('/layouts.add-stack/{id}', [StackController::class, 'generateQuestion'])->name('generate-question');
     Route::get('/stacks/{stack}', [StackController::class, 'show'])->name('view-stack');
+    Route::delete('/stacks/{id}', [StackController::class, 'destroy'])->name('delete-stack');
 });
 
 
