@@ -15,6 +15,7 @@ class Stack extends Model
         'exam_board',
         'open',
         'question_prompt',
+        'quantity'
     ];
     
     public function questions()

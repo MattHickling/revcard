@@ -13,6 +13,16 @@
                         @csrf
 
                         <div class="mb-4">
+                            <label for="quantity" class="block text-sm font-medium text-gray-700">How many questions</label>
+                            <select id="quantity" name="quantity" class="form-select mt-1 block w-full" required>
+                                <option value="">How many questions would you like?</option>
+                                @foreach(config('preferences.quantity') as $quantity)
+                                    <option value="{{ $quantity }}" {{ old('quantity') == $quantity ? 'selected' : '' }}>{{ $quantity }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="mb-4">
                             <label for="year_in_school" class="block text-sm font-medium text-gray-700">Year in School</label>
                             <select id="year_in_school" name="year_in_school" class="form-select mt-1 block w-full" required>
                                 <option value="">Select Year</option>

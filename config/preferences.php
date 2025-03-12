@@ -1,6 +1,12 @@
 <?php
 
 return [
+
+    'quantity' => [
+        '5',
+        '10',
+        '20',
+    ],
     'years_in_school' => [
         'Year 7',
         'Year 8',
