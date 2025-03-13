@@ -1,11 +1,11 @@
 <x-layout>
-    <div class="container text-white"> 
+    <div class="container text-white">
         <h1>Quiz Summary</h1>
 
         @php
             $totalQuestions = $attempt->details->count();
-            $correctAnswers = $attempt->details->where('is_correct', true)->count();
-            $incorrectAnswers = $totalQuestions - $correctAnswers;
+            $correctAnswersCount = $attempt->details->where('is_correct', true)->count();
+            $incorrectAnswers = $totalQuestions - $correctAnswersCount;
         @endphp
 
         <div class="row mb-4">
@@ -13,9 +13,9 @@
                 <h3>Quiz Attempt Information</h3>
                 <p><strong>Attempt ID:</strong> {{ $attempt->id }}</p>
                 <p><strong>Total Questions:</strong> {{ $totalQuestions }}</p>
-                <p><strong>Correct Answers:</strong> {{ $correctAnswers }}</p>
+                <p><strong>Correct Answers:</strong> {{ $correctAnswersCount }}</p>
                 <p><strong>Incorrect Answers:</strong> {{ $incorrectAnswers }}</p>
-                <p><strong>Score:</strong> {{ $totalQuestions > 0 ? (100 * $correctAnswers) / $totalQuestions : 0 }}%</p>
+                <p><strong>Score:</strong> {{ $totalQuestions > 0 ? (100 * $correctAnswersCount) / $totalQuestions : 0 }}%</p>
             </div>
         </div>
 
@@ -36,9 +36,17 @@
                         <td>{{ $index + 1 }}</td>
                         <td>{{ optional($detail->question)->text ?? 'Question not found' }}</td>
                         <td>{{ $detail->user_answer }}</td>
-                        <td>{{ $detail->correct_answer }}</td>
                         <td>
-                            @if($detail->is_correct)
+                            @if (!$detail->is_correct)
+                                <span class="text-warning">
+                                    {{ $correctAnswers[$detail->question_id] ?? 'Answer not available' }}
+                                </span>
+                            @else
+                                <span class="text-success">✔</span>
+                            @endif
+                        </td>
+                        <td>
+                            @if ($detail->is_correct)
                                 <span class="badge bg-success">Correct</span>
                             @else
                                 <span class="badge bg-danger">Incorrect</span>
@@ -49,6 +57,6 @@
             </tbody>
         </table>
 
-        <a href="{{ url('/quiz') }}" class="btn btn-primary mt-4">Back to Quiz List</a>
+        <a href="{{ route('dashboard') }}" class="btn btn-primary mt-4">Back to Dashboard</a>
     </div>
 </x-layout>

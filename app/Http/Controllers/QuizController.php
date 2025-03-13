@@ -69,18 +69,31 @@ class QuizController extends Controller
 
     public function showQuizSummary($stackId)
     {
-        // dd($attemptId);
+    
         $attempt = QuizAttempt::with('details.question')
                                 ->where('stack_id', $stackId)
                                 ->latest()
                                 ->firstOrFail();
 
-         $questions = $attempt->details->pluck('question');
-        
-                            // dd($attempt, $questions);
-        // $attempt = QuizAttempt::with('details.question')->findOrFail($attemptId);
-        return view('quiz.summary', compact('attempt', 'questions'));
-    }
+        $questions = $attempt->details->pluck('question');
+        $correctAnswers = []; 
 
+        foreach ($attempt->details as $detail) {
+            $question = $detail->question;
+
+            if ($question) {
+                $correctAnswers[$question->id] = match ($question->correct_answer) {
+                    'A' => $question->option_1,
+                    'B' => $question->option_2,
+                    'C' => $question->option_3,
+                    'D' => $question->option_4,
+                    default => 'Answer not available',
+                };
+            }
+        }
+
+    
+        return view('quiz.summary', compact('attempt', 'questions', 'correctAnswers'));
+    }
 
 }
