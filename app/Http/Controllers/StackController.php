@@ -55,7 +55,7 @@ class StackController extends Controller
         $cleanQuestions = $this->extractQuestions($responseContent);
 
         // if (empty($cleanQuestions)) {
-        //     return back()->withErrors(['error' => 'No questions generated. Please try again.']);
+        //     return back()->withErrors(['error' => 'No questions generated.']);
         // }
 
         $stack = Stack::create([
@@ -86,12 +86,15 @@ class StackController extends Controller
                 'correct_answer' => $parsedQuestion['correct_answer'],
             ]);
         }
+        $openStacks = Stack::where('user_id', auth()->id())->get();
 
-        return view('layouts.add-stack', [
+        return view('dashboard', [
             'id' => $id,
             'questionPrompt' => $questionPrompt,
             'generatedQuestions' => $cleanQuestions,
+            'openStacks' => $openStacks,
         ]);
+
     }
 
     private function generateQuestionPrompt($request)
@@ -128,19 +131,19 @@ class StackController extends Controller
 
     private function extractQuestions($responseContent)
     {
-        preg_match_all('/QUESTION:.*?(?=(QUESTION:|$))/s', $responseContent, $matches);
+        preg_match_all('/### START QUESTION ###(.*?)### END QUESTION ###/s', $responseContent, $matches);
 
-        // if (empty($matches[0])) {
-        //     Log::error('No questions matched');
-        //     return [];
-        // }
+        if (empty($matches[1])) {
+            Log::error('No questions matched');
+            return [];
+        }
 
-        $questions = array_map('trim', $matches[0]);
-
-        // Log::info('Extracted Questions:', ['questions' => $questions]);
+        $questions = array_map('trim', $matches[1]);
+        Log::info('Extracted Questions:', ['questions' => $questions]);
 
         return $questions;
     }
+
 
 
 

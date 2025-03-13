@@ -21,4 +21,5 @@ class QuizAttempt extends Model
     {
         return $this->hasMany(QuizAttemptDetail::class);
     }
+    
 }

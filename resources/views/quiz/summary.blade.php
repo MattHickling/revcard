@@ -1,17 +1,21 @@
-@extends('layouts.app')
-
-<x-slot name="content">
-    <div class="container">
+<x-layout>
+    <div class="container text-white"> 
         <h1>Quiz Summary</h1>
+
+        @php
+            $totalQuestions = $attempt->details->count();
+            $correctAnswers = $attempt->details->where('is_correct', true)->count();
+            $incorrectAnswers = $totalQuestions - $correctAnswers;
+        @endphp
 
         <div class="row mb-4">
             <div class="col-md-6">
                 <h3>Quiz Attempt Information</h3>
                 <p><strong>Attempt ID:</strong> {{ $attempt->id }}</p>
-                <p><strong>Total Questions:</strong> {{ $attempt->details->count() }}</p>
-                <p><strong>Correct Answers:</strong> {{ $attempt->details->where('is_correct', true)->count() }}</p>
-                <p><strong>Incorrect Answers:</strong> {{ $attempt->details->where('is_correct', false)->count() }}</p>
-                <p><strong>Score:</strong> {{ (100 * $attempt->details->where('is_correct', true)->count()) / $attempt->details->count() }}%</p>
+                <p><strong>Total Questions:</strong> {{ $totalQuestions }}</p>
+                <p><strong>Correct Answers:</strong> {{ $correctAnswers }}</p>
+                <p><strong>Incorrect Answers:</strong> {{ $incorrectAnswers }}</p>
+                <p><strong>Score:</strong> {{ $totalQuestions > 0 ? (100 * $correctAnswers) / $totalQuestions : 0 }}%</p>
             </div>
         </div>
 
@@ -19,25 +23,25 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>#</th>
-                    <th>Question</th>
-                    <th>Your Answer</th>
-                    <th>Correct Answer</th>
-                    <th>Status</th>
+                    <th class="text-white">#</th>
+                    <th class="text-white">Question</th>
+                    <th class="text-white">Your Answer</th>
+                    <th class="text-white">Correct Answer</th>
+                    <th class="text-white">Status</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach($attempt->details as $index => $detail)
                     <tr>
                         <td>{{ $index + 1 }}</td>
-                        <td>{{ $detail->question->text }}</td>
+                        <td>{{ optional($detail->question)->text ?? 'Question not found' }}</td>
                         <td>{{ $detail->user_answer }}</td>
                         <td>{{ $detail->correct_answer }}</td>
                         <td>
                             @if($detail->is_correct)
-                                <span class="badge badge-success">Correct</span>
+                                <span class="badge bg-success">Correct</span>
                             @else
-                                <span class="badge badge-danger">Incorrect</span>
+                                <span class="badge bg-danger">Incorrect</span>
                             @endif
                         </td>
                     </tr>
@@ -47,4 +51,4 @@
 
         <a href="{{ url('/quiz') }}" class="btn btn-primary mt-4">Back to Quiz List</a>
     </div>
-</x-slot>
+</x-layout>

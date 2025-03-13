@@ -100,7 +100,8 @@
                 <p><strong>Score:</strong> <span id="scorePercentage"></span>%</p>
             </div>
             <div class="modal-footer">
-                <a id="reviewSummaryBtn" class="btn btn-primary" href="#">Review Summary</a>
+                <a href="{{ route('quiz.summary', ['stackId' => $stack->id]) }}"id="reviewSummaryBtn" class="btn btn-primary" href="#">Review Summary</a>
+                {{-- <a href="{{ route('dashboard', ['stack' => $stack->id]) }}" --}}
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
@@ -171,8 +172,8 @@
                 const score = (data.correct / (data.correct + data.wrong)) * 100;
                 $('#scorePercentage').text(score.toFixed(2));
 
-                const summaryUrl = "{{ route('quiz.summary', ':attemptId') }}".replace(':attemptId', data.attempt_id);
-                $('#reviewSummaryBtn').attr('href', summaryUrl);
+                // const summaryUrl = "{{ route('quiz.summary', ':attemptId') }}".replace(':attemptId', data.attempt_id);
+                // $('#reviewSummaryBtn').attr('href', summaryUrl);
 
                 $('#quizResultsModal').modal('show');          
              },

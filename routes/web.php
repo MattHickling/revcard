@@ -26,8 +26,9 @@ Route::middleware('auth')->group(function () {
     
     
     Route::post('/quiz/save', [QuizController::class, 'saveQuizResult'])->name('quiz.save');
-    Route::get('/quiz/summary/{attemptId}', [QuizController::class, 'showQuizSummary'])->name('quiz.summary');
-    
+    Route::get('/quiz/summary/{stackId}', [QuizController::class, 'showQuizSummary'])->name('quiz.summary');
+
+
     Route::get('/layouts.add-stack/{id}', [StackController::class, 'showForm'])->name('add-stack');
     Route::post('/layouts.add-stack/{id}', [StackController::class, 'generateQuestion'])->name('generate-question');
     Route::get('/stacks/{stack}', [StackController::class, 'show'])->name('view-stack');

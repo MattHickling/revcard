@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Question;
 use App\Models\QuizAttempt;
-use App\Models\QuizAttemptDetail;
 use Illuminate\Http\Request;
+use App\Models\QuizAttemptDetail;
 
 class QuizController extends Controller
 {
@@ -66,11 +67,19 @@ class QuizController extends Controller
         ]);
     }
 
-    public function showQuizSummary($attemptId)
+    public function showQuizSummary($stackId)
     {
         // dd($attemptId);
-        $attempt = QuizAttempt::with('details.question')->findOrFail($attemptId);
-        return view('quiz.summary', compact('attempt'));
+        $attempt = QuizAttempt::with('details.question')
+                                ->where('stack_id', $stackId)
+                                ->latest()
+                                ->firstOrFail();
+
+         $questions = $attempt->details->pluck('question');
+        
+                            // dd($attempt, $questions);
+        // $attempt = QuizAttempt::with('details.question')->findOrFail($attemptId);
+        return view('quiz.summary', compact('attempt', 'questions'));
     }
 
 
