@@ -93,7 +93,7 @@ class QuizController extends Controller
         }
 
     
-        return view('quiz.summary', compact('attempt', 'questions', 'correctAnswers'));
+        return view('quiz.summary', compact('attempt', 'questions', 'correctAnswers', 'stackId'));
     }
 
 }

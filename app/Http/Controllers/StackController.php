@@ -203,7 +203,7 @@ class StackController extends Controller
         $stack = Stack::where('id', $id);
 
         $stack->delete();
-        return redirect()->back();
+        return redirect()->route('dashboard')->with('success', 'Stack deleted successfully!');
         
     }
 }

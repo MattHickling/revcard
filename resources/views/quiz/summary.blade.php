@@ -56,7 +56,13 @@
                 @endforeach
             </tbody>
         </table>
-
-        <a href="{{ route('dashboard') }}" class="btn btn-primary mt-4">Back to Dashboard</a>
+        <form action="{{ route('delete-stack', ['id' => $stackId]) }}" method="POST" style="display: inline-block;" onsubmit="return confirm('Are you sure you want to delete this stack?');">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="btn btn-danger">Delete Stack</button>
+        </form>
+        <div>
+            <a href="{{ route('dashboard') }}" class="btn btn-primary mt-4">Back to Dashboard</a>
+        </div>
     </div>
 </x-layout>
