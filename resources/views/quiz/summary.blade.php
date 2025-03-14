@@ -11,7 +11,7 @@
         <div class="row mb-4">
             <div class="col-md-6">
                 <h3>Quiz Attempt Information</h3>
-                <p><strong>Attempt ID:</strong> {{ $attempt->id }}</p>
+                {{-- <p><strong>Attempt ID:</strong> {{ $attempt->id }}</p> --}}
                 <p><strong>Total Questions:</strong> {{ $totalQuestions }}</p>
                 <p><strong>Correct Answers:</strong> {{ $correctAnswersCount }}</p>
                 <p><strong>Incorrect Answers:</strong> {{ $incorrectAnswers }}</p>
