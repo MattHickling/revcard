@@ -171,6 +171,8 @@
                 
                 const score = (data.correct / (data.correct + data.wrong)) * 100;
                 $('#scorePercentage').text(score.toFixed(2));
+                let resultMessage = `<p class="alert">${data.message}</p>`;
+                $('.modal-body').prepend(resultMessage);
 
                 // const summaryUrl = "{{ route('quiz.summary', ':attemptId') }}".replace(':attemptId', data.attempt_id);
                 // $('#reviewSummaryBtn').attr('href', summaryUrl);
