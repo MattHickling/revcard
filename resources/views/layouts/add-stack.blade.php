@@ -9,7 +9,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <form action="{{ route('generate-question', ['id' => $id]) }}" method="POST">
+                    <form id="quizForm" action="{{ route('generate-question', ['id' => $id]) }}" method="POST">
                         @csrf
 
                         <div class="mb-4">
@@ -61,18 +61,23 @@
                         </div>
 
                         <button type="submit" class="btn btn-warning">Generate Questions</button>
+                        <div id="loadingSpinner" class="mt-3" style="display: none;">
+                            <img src="{{ asset('asset/images/bouncing-circles.svg') }}" alt="Loading..." width="50">
+                            <p style="color: chartreuse">Generating questions, please wait...</p>
+                        </div>
                     </form>
                     {{-- Just for testing --}}
-                    @if(isset($questionPrompt))
+                    {{-- @if(isset($questionPrompt))
                         <div>
                             <p>{{ $questionPrompt }}</p>
                         </div>
-                    @endif
+                    @endif --}}
                 </div>
             </div>
         </div>
     </div>
 </x-app-layout>
+
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const topicsBySubject = {
@@ -145,5 +150,8 @@
             }
         });
     });
-
+    document.getElementById('quizForm').addEventListener('submit', function() {
+        document.getElementById('loadingSpinner').style.display = 'block';
+        document.getElementById('submitBtn').disabled = true;
+    });
 </script>
