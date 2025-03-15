@@ -56,13 +56,18 @@
                 @endforeach
             </tbody>
         </table>
-        <form action="{{ route('delete-stack', ['id' => $stackId]) }}" method="POST" style="display: inline-block;" onsubmit="return confirm('Are you sure you want to delete this stack?');">
-            @csrf
-            @method('DELETE')
-            <button type="submit" class="btn btn-danger">Delete Stack</button>
-        </form>
-        <div>
-            <a href="{{ route('dashboard') }}" class="btn btn-primary mt-4">Back to Dashboard</a>
+        <div class="flex items-center gap-4 mt-4">
+            <form action="{{ route('delete-stack', ['id' => $stackId]) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this stack?');">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn btn-danger">Delete Stack</button>
+            </form>
+        
+            <a href="{{ route('dashboard') }}" class="btn btn-primary">Back to Dashboard</a>
+        
+            <a href="{{ route('view-stack', ['stack' => $stackId]) }}" class="btn btn-success">Retry</a>
         </div>
+        
+       
     </div>
 </x-layout>

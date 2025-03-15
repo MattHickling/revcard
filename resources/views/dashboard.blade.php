@@ -23,7 +23,7 @@
 
                     
                     <div class="flex justify-between items-center">
-                        <a href="{{ route('view-stack', ['stack' => $stack->id]) }}" class="btn btn-primary">View Stack</a>
+                        <a href="{{ route('view-stack', ['stack' => $stack->id]) }}" class="btn btn-primary">Take Quiz</a>
                         
                         <form action="{{ route('delete-stack', ['id' => $stack->id]) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this stack?');">
                             @csrf

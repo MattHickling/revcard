@@ -101,7 +101,7 @@
             </div>
             <div class="modal-footer">
                 <a href="{{ route('quiz.summary', ['stackId' => $stack->id]) }}"id="reviewSummaryBtn" class="btn btn-primary" href="#">Review Summary</a>
-                {{-- <a href="{{ route('dashboard', ['stack' => $stack->id]) }}" --}}
+                <a href="{{ route('view-stack', ['stack' => $stack->id]) }}" class="btn btn-success">Retry</a>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
