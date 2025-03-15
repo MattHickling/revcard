@@ -108,6 +108,7 @@
             'ICT': @json(config('preferences.topics.ict')),
             'Media Studies': @json(config('preferences.topics.media_studies')),
             'Food Technology': @json(config('preferences.topics.food_technology')),
+            'Computer Science': @json(config('preferences.topics.computer_science')),
         };
 
         const subjectSelect = document.getElementById('subject');

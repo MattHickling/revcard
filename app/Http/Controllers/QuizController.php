@@ -6,6 +6,7 @@ use App\Models\Question;
 use App\Models\QuizAttempt;
 use Illuminate\Http\Request;
 use App\Models\QuizAttemptDetail;
+use Illuminate\Support\Facades\Auth;
 
 class QuizController extends Controller
 {
@@ -53,12 +54,12 @@ class QuizController extends Controller
                 $wrongCount++;
             }
         }
-
+// dd(Auth::user());
         if ($totalQuestions == 5) {
             if ($correctCount <= 3) {
                 $message = "You got " . $correctCount . " correct, it might be good to retry these questions.";
             } else {
-                $message = "Well done " . Auth::user()->first_name . "! I think you are ready to try some different questions or move onto a different subject.";
+                $message = "Well done! You got ". $correctCount . " questions correct. I think you are ready to try some different questions or move onto a different subject.";
             }
         }
         
@@ -72,7 +73,7 @@ class QuizController extends Controller
         
         if ($totalQuestions == 20) {
             if ($correctCount <= 15) {
-                $message = "You got " . $correctCount . " correct, it might be good to retry these questions.";
+                $message = Auth::user()->first_name . ", you got " . $correctCount . " question correct, it might be good to retry these questions.";
             } else {
                 $message = "Well done " . Auth::user()->first_name . "! I think you are ready to try some different questions or move onto a different subject.";
             }

@@ -700,5 +700,28 @@ return [
             'Food Technology and Sustainability',
         ],
 
+        'computer_science' => [
+            'Algorithms and Problem Solving',
+            'Programming Basics (Python, Java, or Scratch)',
+            'Data Types and Variables',
+            'Control Structures (Loops and Conditionals)',
+            'Functions and Procedures',
+            'Computer Hardware and Components',
+            'Storage Devices and Memory',
+            'Networking and the Internet',
+            'Cybersecurity and Online Safety',
+            'Binary and Data Representation',
+            'Databases and SQL Basics',
+            'Artificial Intelligence and Machine Learning Basics',
+            'Software Development Life Cycle',
+            'Computational Thinking',
+            'Logic Gates and Boolean Algebra',
+            'Operating Systems and File Management',
+            'Cloud Computing and Virtualization',
+            'Impacts of Digital Technology on Society',
+            'Ethical Hacking and Encryption',
+            'Game Development Basics',
+        ],
+
     ]
 ];
