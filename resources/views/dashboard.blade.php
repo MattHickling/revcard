@@ -8,10 +8,11 @@
     <div class="text-center">
         <a class="btn btn-success mt-2" href="{{ route('add-stack', ['id' => auth()->id()]) }}">Add A New Stack</a>
     </div>
-
-    <div class="max-w-2xl mx-auto mt-4">
-        <input type="text" id="searchInput" placeholder="Search flashcard stacks..." class="form-control p-2 border rounded">
-    </div>
+    @if($openStacks->isNotEmpty())
+        <div class="max-w-2xl mx-auto mt-4">
+            <input type="text" id="searchInput" placeholder="Search flashcard stacks..." class="form-control p-2 border rounded">
+        </div>
+    @endif
 
     @if($openStacks->isNotEmpty())
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
