@@ -44,10 +44,11 @@
 
                         <div class="mb-4">
                             <label for="topic" class="block text-sm font-medium text-gray-700">Topic</label>
-                            <select id="topic" name="topic" class="form-select mt-1 block w-full" required>
+                            <select id="topic" name="topic" class="form-select mt-1 block w-full topic-select" required>
                                 <option value="">Select Topic</option>
                             </select>
                         </div>
+                        
                         
 
                         <div class="mb-4">
@@ -77,82 +78,98 @@
         </div>
     </div>
 </x-app-layout>
+<style>
+ 
+
+    #topic {
+        width: 100% !important;
+        max-width: 100% !important;
+        white-space: normal !important; 
+        overflow: visible !important; 
+    }
+
+    #topic option {
+        white-space: normal !important; 
+        overflow: visible !important; 
+        display: block !important; 
+    }
+
+
+</style>
+
+
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const topicsBySubject = {
-            'English Literature': @json(config('preferences.topics.english_literature')),
-            'English Language': @json(config('preferences.topics.english_language')),
-            'Maths': @json(config('preferences.topics.maths')),
-            'Biology': @json(config('preferences.topics.biology')),
-            'Chemistry': @json(config('preferences.topics.chemistry')),
-            'Physics': @json(config('preferences.topics.physics')),
-            'History': @json(config('preferences.topics.history')),
-            'Geography': @json(config('preferences.topics.geography')),
-            'Spanish': @json(config('preferences.topics.spanish')),
-            'French': @json(config('preferences.topics.french')),
-            'German': @json(config('preferences.topics.german')),
-            'Italian': @json(config('preferences.topics.italian')),
-            'Art': @json(config('preferences.topics.art')),
-            'Design Technology': @json(config('preferences.topics.design_technology')),
-            'Physical Education': @json(config('preferences.topics.physical_education')),
-            'Religious Studies': @json(config('preferences.topics.religious_studies')),
-            'Music': @json(config('preferences.topics.music')),
-            'Drama': @json(config('preferences.topics.drama')),
-            'Business Studies': @json(config('preferences.topics.business_studies')),
-            'Psychology': @json(config('preferences.topics.psychology')),
-            'Sociology': @json(config('preferences.topics.sociology')),
-            'Philosophy': @json(config('preferences.topics.philosophy')),
-            'Economics': @json(config('preferences.topics.economics')),
-            'Health & Social Care': @json(config('preferences.topics.health_and_social_care')),
-            'ICT': @json(config('preferences.topics.ict')),
-            'Media Studies': @json(config('preferences.topics.media_studies')),
-            'Food Technology': @json(config('preferences.topics.food_technology')),
-            'Computer Science': @json(config('preferences.topics.computer_science')),
-        };
+   document.addEventListener('DOMContentLoaded', function () {
+    const topicsBySubject = {
+        'English Literature': @json(config('preferences.topics.english_literature')),
+        'English Language': @json(config('preferences.topics.english_language')),
+        'Maths': @json(config('preferences.topics.maths')),
+        'Biology': @json(config('preferences.topics.biology')),
+        'Chemistry': @json(config('preferences.topics.chemistry')),
+        'Physics': @json(config('preferences.topics.physics')),
+        'History': @json(config('preferences.topics.history')),
+        'Geography': @json(config('preferences.topics.geography')),
+        'Spanish': @json(config('preferences.topics.spanish')),
+        'French': @json(config('preferences.topics.french')),
+        'German': @json(config('preferences.topics.german')),
+        'Italian': @json(config('preferences.topics.italian')),
+        'Art': @json(config('preferences.topics.art')),
+        'Design Technology': @json(config('preferences.topics.design_technology')),
+        'Physical Education': @json(config('preferences.topics.physical_education')),
+        'Religious Studies': @json(config('preferences.topics.religious_studies')),
+        'Music': @json(config('preferences.topics.music')),
+        'Drama': @json(config('preferences.topics.drama')),
+        'Business Studies': @json(config('preferences.topics.business_studies')),
+        'Psychology': @json(config('preferences.topics.psychology')),
+        'Sociology': @json(config('preferences.topics.sociology')),
+        'Philosophy': @json(config('preferences.topics.philosophy')),
+        'Economics': @json(config('preferences.topics.economics')),
+        'Health & Social Care': @json(config('preferences.topics.health_and_social_care')),
+        'ICT': @json(config('preferences.topics.ict')),
+        'Media Studies': @json(config('preferences.topics.media_studies')),
+        'Food Technology': @json(config('preferences.topics.food_technology')),
+        'Computer Science': @json(config('preferences.topics.computing_ict')),
+    };
 
-        const subjectSelect = document.getElementById('subject');
-        const topicSelect = document.getElementById('topic');
+    const examBoardsBySubject = @json(config('preferences.exam_boards_by_subject'));
 
-        subjectSelect.addEventListener('change', function () {
-            topicSelect.innerHTML = '<option value="">Select Topic</option>';
+    const subjectSelect = document.getElementById('subject'); 
+    const topicSelect = document.getElementById('topic'); 
+    const examBoardSelect = document.getElementById('exam_board'); 
 
-            const selectedSubject = subjectSelect.value;
+    subjectSelect.addEventListener('change', function () {
+        const selectedSubject = subjectSelect.value;
+        console.log("Selected Subject:", selectedSubject); 
 
-            if (selectedSubject && topicsBySubject[selectedSubject]) {
-                topicsBySubject[selectedSubject].forEach(function (topic) {
-                    const option = document.createElement('option');
-                    option.value = topic;
-                    option.textContent = topic;
-                    topicSelect.appendChild(option);
-                });
-            }
-        });
+        topicSelect.innerHTML = '<option value="">Select Topic</option>';
+        examBoardSelect.innerHTML = '<option value="">Select Exam Board</option>';
+
+        if (selectedSubject && topicsBySubject[selectedSubject]) {
+            console.log("Adding topics for:", selectedSubject); 
+
+            topicsBySubject[selectedSubject].forEach(function (topic) {
+                const option = document.createElement('option');
+                option.value = topic;
+                option.textContent = topic;
+                topicSelect.appendChild(option);
+            });
+        }
+
+        if (selectedSubject && examBoardsBySubject[selectedSubject]) {
+            examBoardsBySubject[selectedSubject].forEach(function (board) {
+                const option = document.createElement('option');
+                option.value = board;
+                option.textContent = board;
+                examBoardSelect.appendChild(option);
+            });
+        }
     });
 
-    document.addEventListener('DOMContentLoaded', function () {
-        const examBoardsBySubject = @json(config('preferences.exam_boards_by_subject'));
-
-        const subjectSelect = document.getElementById('subject');
-        const examBoardSelect = document.getElementById('exam_board');
-
-        subjectSelect.addEventListener('change', function () {
-            examBoardSelect.innerHTML = '<option value="">Select Exam Board</option>';
-
-            const selectedSubject = subjectSelect.value;
-
-            if (selectedSubject && examBoardsBySubject[selectedSubject]) {
-                examBoardsBySubject[selectedSubject].forEach(function (board) {
-                    const option = document.createElement('option');
-                    option.value = board;
-                    option.textContent = board;
-                    examBoardSelect.appendChild(option);
-                });
-            }
-        });
-    });
-    document.getElementById('quizForm').addEventListener('submit', function() {
+    document.getElementById('quizForm').addEventListener('submit', function () {
         document.getElementById('loadingSpinner').style.display = 'block';
         document.getElementById('submitBtn').disabled = true;
     });
+});
+
 </script>
