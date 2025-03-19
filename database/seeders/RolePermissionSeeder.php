@@ -15,11 +15,11 @@ class RolePermissionSeeder extends Seeder
             'manage students',         
             'manage own profile',      
             'review test results',
-            'take test',
-            'create tests',    
-            'view tests',      
-            'attempt tests', 
-            'edit users',   
+            'take test',              
+            'create tests',           
+            'view tests',             
+            'attempt tests',          
+            'edit users',             
         ];
 
         foreach ($permissions as $permission) {
@@ -40,9 +40,10 @@ class RolePermissionSeeder extends Seeder
         ]);
 
         $studentRole->givePermissionTo([
-            'manage own profile',
-            'view tests',
-            'attempt tests',
+            'manage own profile',    
+            'view tests',             
+            'take test',              
+            'attempt tests',       
         ]);
     }
 }

@@ -14,7 +14,7 @@ class StackController extends Controller
     {
         $user = User::find(1);
         // Log::info('Assigning roles and permissions to user', ['user_id' => $user->id]);
-        $user->assignRole('Admin');
+        // $user->assignRole('Admin');
         $user->givePermissionTo('edit users');
 
         $request->validate([

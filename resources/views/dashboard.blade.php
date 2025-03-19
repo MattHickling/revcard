@@ -1,20 +1,26 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-600 leading-tight">
-            {{ __('Your Flashcard Stacks') }}
-        </h2>
-    </x-slot>
 
-    <div class="text-center">
-        <a class="btn btn-success mt-2" href="{{ route('add-stack', ['id' => auth()->id()]) }}">Add A New Stack</a>
-    </div>
-    @if($openStacks->isNotEmpty())
-        <div class="max-w-2xl mx-auto mt-4">
-            <input type="text" id="searchInput" placeholder="Search flashcard stacks..." class="form-control p-2 border rounded">
-        </div>
+
+    @if(auth()->user()->hasRole('teacher'))
+        <a href="{{ route('teacher.dashboard') }}">Teacher Dashboard</a>
     @endif
 
-    @if($openStacks->isNotEmpty())
+    @if(auth()->user()->hasRole('student'))
+    <x-app-layout>
+        <x-slot name="header">
+            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-600 leading-tight">
+                {{ __('Your Flashcard Stacks') }}
+            </h2>
+        </x-slot>
+    
+        <div class="text-center">
+            <a class="btn btn-success mt-2" href="{{ route('add-stack', ['id' => auth()->id()]) }}">Add A New Stack</a>
+        </div>
+        @if($openStacks->isNotEmpty())
+            <div class="max-w-2xl mx-auto mt-4">
+                <input type="text" id="searchInput" placeholder="Search flashcard stacks..." class="form-control p-2 border rounded">
+            </div>
+        @endif
+        @if($openStacks->isNotEmpty())
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
             @foreach($openStacks as $stack)
                 <div class="stack-card bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6">
@@ -50,7 +56,7 @@
             </div>
         </div>
     </div>
-</x-app-layout>
+    </x-app-layout>
 <script>
     document.getElementById('searchInput').addEventListener('input', function() {
         let filter = this.value.toLowerCase();
@@ -66,3 +72,8 @@
         });
     });
 </script>
+
+@endif
+
+
+    
