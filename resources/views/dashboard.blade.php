@@ -1,8 +1,14 @@
 
 
     @if(auth()->user()->hasRole('teacher'))
-        <a href="{{ route('teacher.dashboard') }}">Teacher Dashboard</a>
+    <x-app-layout>
+    </x-app-layout>
     @endif
+    {{-- {{ dd(auth()->user()->roles) }} --}}
+
+{{-- {{  dd(auth()->user()->hasRole('student'))}} --}}
+{{-- {{  dd(auth()->user())}} --}}
+
 
     @if(auth()->user()->hasRole('student'))
     <x-app-layout>

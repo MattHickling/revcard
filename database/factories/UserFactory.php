@@ -24,7 +24,8 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->name(),
+            'first_name' => $this->faker->firstName(),
+            'last_name' => $this->faker->lastName(),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
@@ -40,5 +41,16 @@ class UserFactory extends Factory
         return $this->state(fn (array $attributes) => [
             'email_verified_at' => null,
         ]);
+    }
+
+    // @param  string  $roleName
+    // @return \Illuminate\Database\Eloquent\Factories\Factory
+    
+    public function withRole(string $roleName)
+    {
+        return $this->afterCreating(function (User $user) use ($roleName) {
+            $role = Role::where('name', $roleName)->first();
+            $user->assignRole($role);
+        });
     }
 }
