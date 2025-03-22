@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('stacks', function (Blueprint $table) {
-            $table->integer('quantity')->after('open');
+        Schema::table('users', function (Blueprint $table) {
+            $table->string('role')->default('student');
         });
     }
 
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('stacks', function (Blueprint $table) {
-            $table->dropColumn('quantity');
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('role');
         });
     }
 };
