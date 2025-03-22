@@ -25,6 +25,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/associate-school', [UserController::class, 'showSchoolForm'])->name('school.form');
+    Route::post('/associate-school', [UserController::class, 'associateSchool'])->name('associate.school');
+    Route::post('/associate-school', [ProfileController::class, 'associateSchool'])->name('associate.school');
+
 });
 
 // Route::middleware(['auth', 'student'])->group(function () {
