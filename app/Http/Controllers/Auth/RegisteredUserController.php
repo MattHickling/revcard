@@ -37,7 +37,7 @@ class RegisteredUserController extends Controller
             'last_name' => 'required|string|max:255',
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'role' => ['required', 'in:teacher,student'],  
+            'role' => ['required', 'in:student,teacher,admin'], 
         ]);
         
         $role = $validated['role']; 
@@ -48,13 +48,19 @@ class RegisteredUserController extends Controller
             'last_name' => $validated['last_name'],
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
+            'role' => $validated['role'],
         ]);
 
+        // Assign the role to the user
         $user->assignRole($role);
 
+        // Trigger the Registered event
         event(new Registered($user));
 
+        // Log the user in
         Auth::login($user);
+
+        // Redirect to the dashboard or a specific route after registration
         return redirect(route('dashboard', absolute: false));
     }
 }

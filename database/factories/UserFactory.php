@@ -42,15 +42,4 @@ class UserFactory extends Factory
             'email_verified_at' => null,
         ]);
     }
-
-    // @param  string  $roleName
-    // @return \Illuminate\Database\Eloquent\Factories\Factory
-    
-    public function withRole(string $roleName)
-    {
-        return $this->afterCreating(function (User $user) use ($roleName) {
-            $role = Role::where('name', $roleName)->first();
-            $user->assignRole($role);
-        });
-    }
 }

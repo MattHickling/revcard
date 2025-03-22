@@ -16,10 +16,17 @@ class StudentMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
+        \Log::info('StudentMiddleware reached.');
+        if (Auth::check()) {
+            // Log user role
+            Log::debug('User Roles Check:', ['user_id' => Auth::id(), 'roles' => Auth::user()->getRoleNames()]);
+        }
+
         if (Auth::check() && Auth::user()->hasRole('student')) {
             return $next($request);
         }
 
         return redirect('/')->with('error', 'Unauthorized Access');
     }
+
 }

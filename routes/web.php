@@ -5,6 +5,13 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\QuizController;
 use App\Http\Controllers\StackController;
 use App\Http\Controllers\DashboardController;
+use App\Models\Student;
+
+//  dd(auth()->check(), auth()->user());
+
+
+// dd(auth()->user()->hasRole('student'));
+// dd(auth()->user());
 
 Route::get('/', function () {
     return view('welcome');
@@ -20,7 +27,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::middleware(['auth', 'student'])->group(function () {
+// Route::middleware(['auth', 'student'])->group(function () {
     Route::post('/quiz/save', [QuizController::class, 'saveQuizResult'])->name('quiz.save');
     Route::get('/quiz/summary/{stackId}', [QuizController::class, 'showQuizSummary'])->name('quiz.summary');
 
@@ -28,7 +35,7 @@ Route::middleware(['auth', 'student'])->group(function () {
     Route::post('/layouts.add-stack/{id}', [StackController::class, 'generateQuestion'])->name('generate-question');
     Route::get('/stacks/{stack}', [StackController::class, 'show'])->name('view-stack');
     Route::delete('/stacks/{id}', [StackController::class, 'destroy'])->name('delete-stack');
-});
+// });
 
 Route::middleware(['auth', 'teacher'])->group(function () {
     Route::get('/teacher-dashboard', function () {

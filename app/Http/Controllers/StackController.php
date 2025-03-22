@@ -4,18 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Stack;  
+use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
+
 
 class StackController extends Controller
 {
     public function generateQuestion(Request $request, $id)
     {
-        $user = User::find(1);
+        $user = Auth::user();
         // Log::info('Assigning roles and permissions to user', ['user_id' => $user->id]);
         // $user->assignRole('Admin');
-        $user->givePermissionTo('edit users');
+        // $user->givePermissionTo('edit users');
 
         $request->validate([
             'year_in_school' => 'required|string',
@@ -118,7 +121,7 @@ class StackController extends Controller
 
     public function showForm($id)
     {
-        return view('layouts.add-stack', ['id' => $id]);
+        return view('layouts.add-stack', ['id' => $id]);    
     }
 
     public function show($id)

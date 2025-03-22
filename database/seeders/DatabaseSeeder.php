@@ -1,25 +1,22 @@
 <?php
-
 namespace Database\Seeders;
 
 use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Database\Seeders\RolePermissionSeeder;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
-    public function run(): void
+    public function run()
     {
-        // User::factory(10)->create();
 
+        User::where('email', 'test@example.com')->delete();
         User::factory()->create([
             'first_name' => 'Test',
             'last_name' => 'User',
-            'email' => 'test@example.com',
-            'password' => bcrypt('password'), 
+            'email' => 'm.hickling@hotmail.co.uk',
+            'password' => 'testing123',
         ]);
+
     }
 }
