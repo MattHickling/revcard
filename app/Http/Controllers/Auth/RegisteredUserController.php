@@ -2,17 +2,20 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
 use App\Models\User;
-use Illuminate\Auth\Events\Registered;
-use Illuminate\Http\RedirectResponse;
+use App\Models\Student; 
+use App\Models\Teacher; 
+use Illuminate\View\View;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rules;
+use Spatie\Permission\Models\Role;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules;
-use Illuminate\View\View;
+use Illuminate\Support\Facades\Http;
 
-use Spatie\Permission\Models\Role;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Auth\Events\Registered;
 use Spatie\Permission\Models\Permission;
 
 class RegisteredUserController extends Controller
@@ -22,7 +25,15 @@ class RegisteredUserController extends Controller
      */
     public function create(): View
     {
-        return view('auth.register');
+        $response = Http::get('https://api.schools.gov.uk/secondary-schools');
+                
+        if ($response->successful()) {
+            $schools = $response->json(); 
+        } else {
+            $schools = [];
+        }
+
+        return view('auth.register', compact('schools'));    
     }
 
     /**
@@ -38,11 +49,13 @@ class RegisteredUserController extends Controller
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'role' => ['required', 'in:student,teacher,admin'], 
+            'school_name' => 'required|string|max:255',  
+            'grade_level' => 'nullable|string|max:255',  
+            'department' => 'nullable|string|max:255',
         ]);
         
         $role = $validated['role']; 
 
-        // Create the user
         $user = User::create([
             'first_name' => $validated['first_name'],
             'last_name' => $validated['last_name'],
@@ -51,16 +64,66 @@ class RegisteredUserController extends Controller
             'role' => $validated['role'],
         ]);
 
-        // Assign the role to the user
+        if ($validated['role'] == 'student') {
+            Student::create([
+                'user_id' => $user->id,
+                'school_name_student' => $validated['school_name'],
+                'grade_level' => $validated['grade_level'],
+            ]);
+        } elseif ($validated['role'] == 'teacher') {
+            Teacher::create([
+                'user_id' => $user->id,
+                'school_name_teacher' => $validated['school_name'],
+                'department' => $validated['department'],
+            ]);
+        }
+
         $user->assignRole($role);
 
-        // Trigger the Registered event
         event(new Registered($user));
-
-        // Log the user in
         Auth::login($user);
 
-        // Redirect to the dashboard or a specific route after registration
+
         return redirect(route('dashboard', absolute: false));
     }
+
+    public function showSchoolForm()
+    {
+        $response = Http::get('https://api.schools.gov.uk/secondary-schools');
+        
+        if ($response->successful()) {
+            $schools = $response->json(); 
+        } else {
+            $schools = [];
+        }
+
+        return view('school-form', compact('schools'));
+    }
+
+    public function associateSchool(Request $request)
+    {
+        $validated = $request->validate([
+            'school_name' => 'required|string|max:255',
+            'grade_level' => 'nullable|string|max:255', 
+            'department' => 'nullable|string|max:255', 
+        ]);
+
+        $user = auth()->user();
+
+        if ($user->hasRole('student')) {
+            $user->student()->update([
+                'school_name_student' => $validated['school_name'],
+                'grade_level' => $validated['grade_level'],
+            ]);
+        } elseif ($user->hasRole('teacher')) {
+            $user->teacher()->update([
+                'school_name_teacher' => $validated['school_name'],
+                'department' => $validated['department'],
+            ]);
+        }
+
+        return redirect()->route('dashboard')->with('success', 'School associated successfully');
+    }
+
+    
 }
