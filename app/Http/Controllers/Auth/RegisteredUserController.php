@@ -25,14 +25,7 @@ class RegisteredUserController extends Controller
      */
     public function create(): View
     {
-        $response = Http::get('https://api.schools.gov.uk/secondary-schools');
-                
-        if ($response->successful()) {
-            $schools = $response->json(); 
-        } else {
-            $schools = [];
-        }
-
+        $schools = \App\Models\School::all();
         return view('auth.register', compact('schools'));    
     }
 
@@ -49,7 +42,7 @@ class RegisteredUserController extends Controller
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'role' => ['required', 'in:student,teacher,admin'], 
-            'school_name' => 'required|string|max:255',  
+            'school_id' => 'required|exists:schools,id', 
             'grade_level' => 'nullable|string|max:255',  
             'department' => 'nullable|string|max:255',
         ]);
@@ -62,6 +55,7 @@ class RegisteredUserController extends Controller
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
             'role' => $validated['role'],
+            'school_id' => $validated['school_id'],  
         ]);
 
         if ($validated['role'] == 'student') {
@@ -85,19 +79,6 @@ class RegisteredUserController extends Controller
 
 
         return redirect(route('dashboard', absolute: false));
-    }
-
-    public function showSchoolForm()
-    {
-        $response = Http::get('https://api.schools.gov.uk/secondary-schools');
-        
-        if ($response->successful()) {
-            $schools = $response->json(); 
-        } else {
-            $schools = [];
-        }
-
-        return view('school-form', compact('schools'));
     }
 
     public function associateSchool(Request $request)
