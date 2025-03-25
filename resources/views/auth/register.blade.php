@@ -1,4 +1,53 @@
+
 <x-guest-layout>
+  <style>
+      #school_search {
+        padding: 10px;
+        border: 2px solid #ddd;
+        border-radius: 5px;
+        background-color: #fff;
+        color: #333;
+        font-size: 16px;
+        width: 100%;
+        transition: border-color 0.3s ease-in-out;
+      }
+
+      #school_search:hover {
+        border-color: #5c6bc0;
+      }
+
+
+      #school_search:focus {
+        border-color: #3f51b5;
+        outline: none;
+      }
+
+      #school_results {
+        border: 2px solid #ddd;
+        border-radius: 5px;
+        background-color: #fff;
+        color: #333;
+        font-size: 16px;
+        width: 100%;
+        max-height: 200px;
+        overflow-y: auto;
+        position: absolute;
+        z-index: 1000;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        display: none; 
+      }
+
+
+      .autocomplete-item {
+        padding: 10px;
+        cursor: pointer;
+      }
+
+      .autocomplete-item:hover {
+        background-color: #f1f1f1;
+      }
+  </style>
+
     <form method="POST" action="{{ route('register') }}">
         @csrf
 
@@ -23,14 +72,12 @@
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
-        <!-- School Selection -->
-        <select id="school_id" name="school_id" class="block mt-1 w-full" required>
-            <option value="">Choose a school</option>
-            @foreach ($schools as $school)
-                <option value="{{ $school->id }}">{{ $school->EstablishmentNumber }}</option>
-            @endforeach
-        </select>
-        
+        <label for="school_search">Search for a School</label>
+        <input type="text" id="school_search" class="block mt-1 w-full" placeholder="Start typing a school name...">
+        <input type="hidden" id="school_id" name="school_id" />
+
+        <!-- Dropdown results -->
+        <div id="school_results" class="autocomplete-dropdown" style="display: none; position: absolute;"></div>
 
         <!-- Role -->
         <div class="mt-4">
@@ -67,3 +114,68 @@
         </div>
     </form>
 </x-guest-layout>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+<link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.full.min.js"></script>
+
+<script>
+   $(document).ready(function() {
+    console.log('Document is ready');
+    
+
+    $('#school_search').on('input', function() {
+        var query = $(this).val();
+        var searchUrl = "{{ route('search.schools') }}"; 
+        
+        if (query.length >= 4) {
+            console.log('🟢 Searching for:', query);
+            
+            $.ajax({
+                url: searchUrl,
+                type: 'GET',
+                data: { query: query },
+                dataType: 'json',
+                success: function(response) {
+                    console.log('✅ Received data:', response);
+                    var results = response.map(function(school) {
+                        return '<div class="autocomplete-item" data-id="' + school.id + '">' + school.EstablishmentName + '</div>';
+                    }).join('');
+                    
+                    // Show the results
+                    $('#school_results').html(results).show();
+                },
+                error: function(xhr, status, error) {
+                    console.log('❌ AJAX Error:', error);
+                    $('#school_results').hide(); // Hide the results on error
+                }
+            });
+        } else {
+            $('#school_results').hide(); // Hide results if query length is less than 2
+        }
+    });
+    
+    // Event listener to handle item click
+    $('#school_results').on('click', '.autocomplete-item', function() {
+        var schoolId = $(this).data('id');
+        var schoolName = $(this).text();
+        
+        // Set the selected school ID and name
+        $('#school_id').val(schoolId);
+        $('#school_search').val(schoolName);
+        
+        // Hide the results dropdown
+        $('#school_results').hide();
+    });
+
+    // Close dropdown if clicked outside
+    $(document).on('click', function(e) {
+        if (!$(e.target).closest('#school_search').length) {
+            $('#school_results').hide();
+        }
+    });
+});
+</script>
