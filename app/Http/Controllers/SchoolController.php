@@ -4,13 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Models\School;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class SchoolController extends Controller
 {
     public function search(Request $request)
     {
+        // dd($request);
         $query = $request->input('query');
-        $schools = School::where('EstablishmentName', 'like', '%' . $query . '%')->get();
+        $schools = DB::table('schools')
+                        ->where('EstablishmentName', 'LIKE', '%' . $query . '%')
+                        ->limit(10)
+                        ->get();
     
         return response()->json($schools);
     }

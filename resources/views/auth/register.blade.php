@@ -131,7 +131,7 @@
         var query = $(this).val();
         var searchUrl = "{{ route('search.schools') }}"; 
         
-        if (query.length >= 4) {
+        if (query.length >= 3) {
             console.log('🟢 Searching for:', query);
             
             $.ajax({
@@ -145,33 +145,28 @@
                         return '<div class="autocomplete-item" data-id="' + school.id + '">' + school.EstablishmentName + '</div>';
                     }).join('');
                     
-                    // Show the results
                     $('#school_results').html(results).show();
                 },
                 error: function(xhr, status, error) {
                     console.log('❌ AJAX Error:', error);
-                    $('#school_results').hide(); // Hide the results on error
+                    $('#school_results').hide(); 
                 }
             });
         } else {
-            $('#school_results').hide(); // Hide results if query length is less than 2
+            $('#school_results').hide(); 
         }
     });
     
-    // Event listener to handle item click
     $('#school_results').on('click', '.autocomplete-item', function() {
         var schoolId = $(this).data('id');
         var schoolName = $(this).text();
-        
-        // Set the selected school ID and name
+
         $('#school_id').val(schoolId);
         $('#school_search').val(schoolName);
         
-        // Hide the results dropdown
         $('#school_results').hide();
     });
 
-    // Close dropdown if clicked outside
     $(document).on('click', function(e) {
         if (!$(e.target).closest('#school_search').length) {
             $('#school_results').hide();

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
+use App\Models\School;
 use App\Models\Student; 
 use App\Models\Teacher; 
 use Illuminate\View\View;
@@ -12,8 +13,8 @@ use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Http;
 
+use Illuminate\Support\Facades\Http;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Auth\Events\Registered;
 use Spatie\Permission\Models\Permission;
@@ -36,6 +37,7 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+        
         $validated = $request->validate([
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
@@ -46,7 +48,9 @@ class RegisteredUserController extends Controller
             'grade_level' => 'nullable|string|max:255',  
             'department' => 'nullable|string|max:255',
         ]);
-        
+        $school = School::find($validated['school_id']);
+        $school_name = $school ? $school->EstablishmentName : null;
+        // dd($request->all(), $school,  $school_name ) ;
         $role = $validated['role']; 
 
         $user = User::create([
@@ -57,18 +61,18 @@ class RegisteredUserController extends Controller
             'role' => $validated['role'],
             'school_id' => $validated['school_id'],  
         ]);
-
+// dd($school_name, $role);;
         if ($validated['role'] == 'student') {
             Student::create([
                 'user_id' => $user->id,
-                'school_name_student' => $validated['school_name'],
-                'grade_level' => $validated['grade_level'],
+                'school_name_student' => $school_name,
+                'grade_level' => $validated['grade_level'] ?? null,
             ]);
         } elseif ($validated['role'] == 'teacher') {
             Teacher::create([
                 'user_id' => $user->id,
-                'school_name_teacher' => $validated['school_name'],
-                'department' => $validated['department'],
+                'school_name_teacher' => $school_name,
+                'department' => $validated['department'] ?? null,
             ]);
         }
 
@@ -78,7 +82,7 @@ class RegisteredUserController extends Controller
         Auth::login($user);
 
 
-        return redirect(route('dashboard', absolute: false));
+        return redirect(route('dashboard'));
     }
 
     public function associateSchool(Request $request)

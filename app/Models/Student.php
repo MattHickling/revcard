@@ -9,7 +9,7 @@ class Student extends Model
     protected $fillable = [
         'user_id',
         'grade_level',
-        'schhol_name_student'
+        'school_name_student'
     ];
 
     public function user()
