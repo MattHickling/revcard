@@ -1,0 +1,13 @@
+LOAD DATA LOCAL INFILE '/Applications/MAMP/tmp/edubaseallstatefunded20250323_utf8.csv'
+    -> INTO TABLE schools
+    -> FIELDS TERMINATED BY ',' 
+    -> ENCLOSED BY '"'
+    -> LINES TERMINATED BY '\n'
+    -> IGNORE 1 LINES
+    -> (URN, LA_code, LA_name, EstablishmentNumber, EstablishmentName, TypeOfEstablishment_name, 
+    -> EstablishmentStatus_name, ReasonEstablishmentOpened_name, OpenDate, PhaseOfEducation_name, 
+    -> StatutoryLowAge, StatutoryHighAge, Boarders_name, OfficialSixthForm_name, Gender_name, 
+    -> ReligiousCharacter_name, AdmissionsPolicy_name, UKPRN, Street, Locality, Address3, Town, 
+    -> County_name, Postcode, SchoolWebsite, TelephoneNum, HeadTitle_name, HeadFirstName, 
+    -> HeadLastName, HeadPreferredJobTitle, GOR_name, ParliamentaryConstituency_code, 
+    -> ParliamentaryConstituency_name);
