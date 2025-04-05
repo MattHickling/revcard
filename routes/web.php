@@ -10,12 +10,7 @@ use App\Models\Student;
 use App\Models\School;
 use Illuminate\Http\Request;
 
-//  dd(auth()->check(), auth()->user());
 
-
-// dd(auth()->user()->hasRole('student'));
-// dd(auth()->user());
-// dd(__LINE__);
 Route::get('/', function () {
     return view('welcome');
 });

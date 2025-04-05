@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ProfileUpdateRequest;
-use Illuminate\Http\RedirectResponse;
+use App\Models\School;
+use Illuminate\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\View\View;
+use App\Http\Requests\ProfileUpdateRequest;
 
 class ProfileController extends Controller
 {
@@ -16,25 +17,50 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): View
     {
+        $schools = School::all(); 
         return view('profile.edit', [
             'user' => $request->user(),
+            'schools' => $schools,  
         ]);
     }
 
     /**
      * Update the user's profile information.
      */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
+    public function update(Request $request)
     {
-        $request->user()->fill($request->validated());
+        $user = Auth::user();
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+        $request->validate([
+            'school_id' => 'required|exists:schools,id',
+            'grade_level' => 'nullable|string|max:255',
+            'department' => 'nullable|string|max:255',
+        ]);
+
+        $user->school_id = $request->school_id;
+
+        if ($user->hasRole('student')) {
+            $user->student->grade_level = $request->grade_level;
+        } elseif ($user->hasRole('teacher')) {
+            $user->teacher->department = $request->department;
         }
 
-        $request->user()->save();
+        $user->save();
 
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
+    }
+
+    public function updateSchool(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'school_id' => 'required|exists:schools,id',  
+        ]);
+
+        $user = $request->user();
+        $user->school_id = $request->school_id;
+        $user->save();
+
+        return Redirect::route('profile.edit')->with('status', 'school-updated');
     }
 
     /**
