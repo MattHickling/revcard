@@ -108,11 +108,10 @@
                 {{ __('Already registered?') }}
             </a>
 
-            <x-primary-button class="ms-4">
-                {{ __('Register') }}
-            </x-primary-button>
         </div>
     </form>
+    <a href="{{ route('register') }}" class="px-6 py-3 text-lg font-semibold text-black bg-green-600 rounded-lg shadow-md transition duration-300 hover:bg-green-700 focus:outline-none focus:ring-4 focus:ring-green-300 dark:focus:ring-green-600">Register</a>
+
 </x-guest-layout>
 
 

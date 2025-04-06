@@ -1,13 +1,13 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\QuizController;
 use App\Http\Controllers\StackController;
 use App\Http\Controllers\SchoolController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
-use App\Models\Student;
 use App\Models\School;
+use App\Models\Student;
 use Illuminate\Http\Request;
 
 
