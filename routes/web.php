@@ -28,7 +28,6 @@ Route::middleware('auth')->group(function () {
     // Route::post('/associate-school', [UserController::class, 'associateSchool'])->name('associate.school');
     Route::post('/associate-school', [ProfileController::class, 'associateSchool'])->name('associate.school');
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-
 });
 
 
