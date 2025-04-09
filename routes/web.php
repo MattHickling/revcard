@@ -1,21 +1,16 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\QuizController;
 use App\Http\Controllers\StackController;
 use App\Http\Controllers\SchoolController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
-use App\Models\Student;
 use App\Models\School;
+use App\Models\Student;
 use Illuminate\Http\Request;
 
-//  dd(auth()->check(), auth()->user());
 
-
-// dd(auth()->user()->hasRole('student'));
-// dd(auth()->user());
-// dd(__LINE__);
 Route::get('/', function () {
     return view('welcome');
 });
@@ -33,7 +28,6 @@ Route::middleware('auth')->group(function () {
     // Route::post('/associate-school', [UserController::class, 'associateSchool'])->name('associate.school');
     Route::post('/associate-school', [ProfileController::class, 'associateSchool'])->name('associate.school');
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-
 });
 
 

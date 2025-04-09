@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\User;
 use App\Models\QuizAttemptDetail;
 use Illuminate\Database\Eloquent\Model;
 
@@ -21,5 +22,10 @@ class QuizAttempt extends Model
     {
         return $this->hasMany(QuizAttemptDetail::class);
     }
-    
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
 }

@@ -20,7 +20,7 @@
         @endif
     </head>
     <body class="font-sans antialiased dark:bg-black dark:text-white/50">
-            <header class="grid grid-cols-2 items-center gap-2 py-10 lg:grid-cols-3">
+            <header class=" ">
                 @if (Route::has('login'))
                 <div class="flex justify-center items-center min-h-screen bg-gray-100 dark:bg-gray-200">
                     <nav class="flex flex-col gap-6 text-center">

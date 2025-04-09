@@ -75,7 +75,7 @@
 @role('teacher')
     <x-app-layout>
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-600 leading-tight">
-           {{-- Teacher content goes here --}}
+          
         </h2>
     </x-app-layout>
 @endrole
