@@ -72,16 +72,76 @@
 @endrole
 
 {{-- Teacher content --}}
-@role('teacher')
-    <x-app-layout>
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-600 leading-tight">
-          
-        </h2>
-    </x-app-layout>
-@endrole
+{{-- @role('teacher') --}}
+<x-app-layout>
+    <h2 class="font-bold text-2xl text-gray-800 mb-4">Student Performance Overview</h2>
+
+    {{-- Average Score per Stack --}}
+    <div class="mb-6">
+        <h3 class="text-lg font-semibold mb-2">📊 Average Score per Topic</h3>
+        <ul class="space-y-1">
+            @foreach($avgByStack as $item)
+                <li class="bg-white p-3 rounded shadow">
+                    {{ $item->subject }} - {{ $item->topic }}: 
+                    <strong>{{ $item->average_score }}%</strong>
+                </li>
+            @endforeach
+        </ul>
+    </div>
+
+    {{-- Attempt History --}}
+    <div class="mb-6">
+        <h3 class="text-lg font-semibold mb-2">📈 Recent Quiz Attempts</h3>
+        <ul class="space-y-1">
+            @foreach($attempts as $attempt)
+                <li class="bg-white p-3 rounded shadow">
+                    Attempt #{{ $attempt->attempt_number }} (Stack #{{ $attempt->stack_id }}): 
+                    <strong>{{ round(($attempt->correct_answers / $attempt->total_questions) * 100, 1) }}%</strong> 
+                    on {{ $attempt->created_at->format('M d, Y') }}
+                </li>
+            @endforeach
+        </ul>
+    </div>
+
+    {{-- Most Missed Questions --}}
+    <div class="mb-6">
+        <h3 class="text-lg font-semibold mb-2">❌ Most Missed Questions</h3>
+        <ul class="space-y-1">
+            @foreach($commonMistakes as $mistake)
+                <li class="bg-white p-3 rounded shadow">
+                    "{{ $mistake->text }}" — missed <strong>{{ $mistake->times_wrong }}</strong> times
+                </li>
+            @endforeach
+        </ul>
+    </div>
+
+    {{-- Answer Breakdown --}}
+    @if($latestAttempt && $answerBreakdown->count())
+        <div>
+            <h3 class="text-lg font-semibold mb-2">📝 Last Attempt (#{{ $latestAttempt->attempt_number }}) - Answer Breakdown</h3>
+            <ul class="space-y-2">
+                @foreach($answerBreakdown as $detail)
+                    <li class="bg-white p-3 rounded shadow">
+                        <p><strong>Q:</strong> {{ $detail->question->text }}</p>
+                        <p>Answer: {{ $detail->user_answer }} | Correct: {{ $detail->correct_answer }}</p>
+                        <p>
+                            Result: 
+                            {!! $detail->is_correct 
+                                ? '<span class="text-green-600 font-bold">Correct</span>' 
+                                : '<span class="text-red-600 font-bold">Wrong</span>' 
+                            !!}
+                        </p>
+                    </li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+</x-app-layout>
+
+{{-- @endrole --}}
 
 {{-- Student content --}}
-{{-- @role('student') --}}
+@role('student')
     <x-app-layout>
         <x-slot name="header">
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-600 leading-tight">
@@ -149,4 +209,4 @@
         });
     });
 </script>
-{{-- @endrole --}}
+@endrole
