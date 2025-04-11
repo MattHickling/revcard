@@ -78,7 +78,7 @@
 
     {{-- Average Score per Stack --}}
     <div class="mb-6">
-        <h3 class="text-lg font-semibold mb-2">📊 Average Score per Topic</h3>
+        <h3 class="text-lg font-semibold mb-2">Average Score per Topic</h3>
         <ul class="space-y-1">
             @foreach($avgByStack as $item)
                 <li class="bg-white p-3 rounded shadow">
@@ -91,7 +91,7 @@
 
     {{-- Attempt History --}}
     <div class="mb-6">
-        <h3 class="text-lg font-semibold mb-2">📈 Recent Quiz Attempts</h3>
+        <h3 class="text-lg font-semibold mb-2">Recent Quiz Attempts</h3>
         <ul class="space-y-1">
             @foreach($attempts as $attempt)
                 <li class="bg-white p-3 rounded shadow">
@@ -105,7 +105,7 @@
 
     {{-- Most Missed Questions --}}
     <div class="mb-6">
-        <h3 class="text-lg font-semibold mb-2">❌ Most Missed Questions</h3>
+        <h3 class="text-lg font-semibold mb-2">Most Missed Questions</h3>
         <ul class="space-y-1">
             @foreach($commonMistakes as $mistake)
                 <li class="bg-white p-3 rounded shadow">
@@ -118,7 +118,7 @@
     {{-- Answer Breakdown --}}
     @if($latestAttempt && $answerBreakdown->count())
         <div>
-            <h3 class="text-lg font-semibold mb-2">📝 Last Attempt (#{{ $latestAttempt->attempt_number }}) - Answer Breakdown</h3>
+            <h3 class="text-lg font-semibold mb-2">Last Attempt (#{{ $latestAttempt->attempt_number }}) - Answer Breakdown</h3>
             <ul class="space-y-2">
                 @foreach($answerBreakdown as $detail)
                     <li class="bg-white p-3 rounded shadow">
