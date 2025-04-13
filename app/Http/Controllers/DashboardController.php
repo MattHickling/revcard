@@ -12,9 +12,11 @@ class DashboardController extends Controller
 {
     public function index()
     {
-       
+       $user = Auth()->user();
+       $role = $user->role;
+    //    dd($role);
         // $studentId = 3; // 
-        // Fetch average score per stack (for all students)
+        // average score per stack
         $avgByStack = DB::table('quiz_attempts')
             ->join('stacks', 'quiz_attempts.stack_id', '=', 'stacks.id')
             ->select('stacks.subject', 'stacks.topic', DB::raw('ROUND(AVG(correct_answers / total_questions) * 100, 1) as average_score'))
@@ -57,7 +59,7 @@ class DashboardController extends Controller
         }
 
         return view('dashboard', compact(
-            'avgByStack', 'attempts', 'commonMistakes', 'answerBreakdown', 'latestAttempt'
+            'avgByStack', 'attempts', 'commonMistakes', 'answerBreakdown', 'latestAttempt', 'role'
         ));
     }
 

@@ -73,6 +73,7 @@
 
 {{-- Teacher content --}}
 {{-- @role('teacher') --}}
+@if($role == 'teacher')
 <x-app-layout>
     <h2 class="font-bold text-2xl text-gray-800 mb-4">Student Performance Overview</h2>
 
@@ -137,7 +138,7 @@
         </div>
     @endif
 </x-app-layout>
-
+@endif
 {{-- @endrole --}}
 
 {{-- Student content --}}
