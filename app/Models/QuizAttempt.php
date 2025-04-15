@@ -18,6 +18,7 @@ class QuizAttempt extends Model
         'total_questions',
     ];
 
+
     public function details()
     {
         return $this->hasMany(QuizAttemptDetail::class);
@@ -25,7 +26,7 @@ class QuizAttempt extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class);
     }
 
 }
