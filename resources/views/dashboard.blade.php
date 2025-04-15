@@ -75,71 +75,63 @@
 {{-- @role('teacher') --}}
 @if($role == 'teacher')
 <x-app-layout>
-    <h2 class="font-bold text-2xl text-gray-800 mb-4">Student Performance Overview</h2>
+    <h2 class="font-bold text-2xl text-gray-800 mb-6">Student Performance Overview</h2>
 
-    {{-- Average Score per Stack --}}
-    <div class="mb-6">
-        <h3 class="text-lg font-semibold mb-2">Average Score per Topic</h3>
-        <ul class="space-y-1">
-            @foreach($avgByStack as $item)
-                <li class="bg-white p-3 rounded shadow">
-                    {{ $item->subject }} - {{ $item->topic }}: 
-                    <strong>{{ $item->average_score }}%</strong>
-                </li>
-            @endforeach
-        </ul>
-    </div>
+    @foreach($students as $student)
+    <div class="mb-10 bg-white p-6 rounded-lg shadow">
+        {{-- {{ dd($student->name ) }} --}}
+        <h3 class="text-xl font-bold text-blue-800 mb-4">{{ $student->name }}</h3>
 
-    {{-- Attempt History --}}
-    <div class="mb-6">
-        <h3 class="text-lg font-semibold mb-2">Recent Quiz Attempts</h3>
-        <ul class="space-y-1">
-            @foreach($attempts as $attempt)
-                <li class="bg-white p-3 rounded shadow">
-                    Attempt #{{ $attempt->attempt_number }} (Stack #{{ $attempt->stack_id }}): 
-                    <strong>{{ round(($attempt->correct_answers / $attempt->total_questions) * 100, 1) }}%</strong> 
+        {{-- Attempts --}}
+        <div class="mb-4">
+            <h4 class="text-lg font-semibold text-gray-700 mb-2">Recent Attempts</h4>
+            @forelse($student->quizAttempts->take(5) as $attempt)
+                <div class="mb-2">
+                    Attempt #{{ $attempt->attempt_number }}:
+                    <strong>{{ round(($attempt->correct_answers / $attempt->total_questions) * 100, 1) }}%</strong>
                     on {{ $attempt->created_at->format('M d, Y') }}
-                </li>
-            @endforeach
-        </ul>
-    </div>
-
-    {{-- Most Missed Questions --}}
-    <div class="mb-6">
-        <h3 class="text-lg font-semibold mb-2">Most Missed Questions</h3>
-        <ul class="space-y-1">
-            @foreach($commonMistakes as $mistake)
-                <li class="bg-white p-3 rounded shadow">
-                    "{{ $mistake->text }}" — missed <strong>{{ $mistake->times_wrong }}</strong> times
-                </li>
-            @endforeach
-        </ul>
-    </div>
-
-    {{-- Answer Breakdown --}}
-    @if($latestAttempt && $answerBreakdown->count())
-        <div>
-            <h3 class="text-lg font-semibold mb-2">Last Attempt (#{{ $latestAttempt->attempt_number }}) - Answer Breakdown</h3>
-            <ul class="space-y-2">
-                @foreach($answerBreakdown as $detail)
-                    <li class="bg-white p-3 rounded shadow">
-                        <p><strong>Q:</strong> {{ $detail->question->text }}</p>
-                        <p>Answer: {{ $detail->user_answer }} | Correct: {{ $detail->correct_answer }}</p>
-                        <p>
-                            Result: 
-                            {!! $detail->is_correct 
-                                ? '<span class="text-green-600 font-bold">Correct</span>' 
-                                : '<span class="text-red-600 font-bold">Wrong</span>' 
-                            !!}
-                        </p>
-                    </li>
-                @endforeach
-            </ul>
+                </div>
+            @empty
+                <p class="text-gray-500">No attempts found.</p>
+            @endforelse
         </div>
-    @endif
+
+        {{-- Answer Breakdown --}}
+        @if($student->latestQuizAttempt && $student->latestQuizAttempt->details->count())
+            <div class="mb-4">
+                <h4 class="font-semibold text-gray-700">Last Attempt Breakdown</h4>
+                <ul>
+                    @foreach($student->latestQuizAttempt->details as $detail)
+                        <li class="bg-gray-100 p-3 rounded mb-2">
+                            <p><strong>Q:</strong> {{ $detail->question->text }}</p>
+                            <p>Answer: {{ $detail->user_answer }} | Correct: {{ $detail->correct_answer }}</p>
+                            <p>
+                                Result: 
+                                {!! $detail->is_correct 
+                                    ? '<span class="text-green-600 font-bold">Correct</span>' 
+                                    : '<span class="text-red-600 font-bold">Wrong</span>' 
+                                !!}
+                            </p>
+                        </li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        {{-- Comment Box --}}
+        <form method="POST" action="{{ route('teacher.comment') }}">
+            @csrf
+            <input type="hidden" name="student_id" value="{{ $student->id }}">
+            <textarea name="comment" class="w-full border rounded p-2">{{ $student->teacherComment->comment ?? '' }}</textarea>
+            <button type="submit" class="mt-2 bg-blue-600 text-white px-4 py-2 rounded">Save Comment</button>
+        </form>
+    </div>
+@endforeach
 </x-app-layout>
 @endif
-{{-- @endrole --}}
+
+
+
 
 {{-- Student content --}}
 @role('student')

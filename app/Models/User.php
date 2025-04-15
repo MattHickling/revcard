@@ -3,11 +3,13 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Student;
+use App\Models\QuizAttempt;
+use App\Models\TeacherComment;
+use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Spatie\Permission\Traits\HasRoles;
-use App\Models\Student;
 
 class User extends Authenticatable
 {
@@ -69,6 +71,21 @@ class User extends Authenticatable
     public function school()
     {
         return $this->belongsTo(School::class);
+    }
+    
+    public function quizAttempts()
+    {
+        return $this->hasMany(QuizAttempt::class, 'user_id');
+    }
+
+    public function latestQuizAttempt()
+    {
+        return $this->hasOne(QuizAttempt::class, 'user_id')->latestOfMany();
+    }
+
+    public function teacherComment()
+    {
+        return $this->hasOne(TeacherComment::class, 'student_id');
     }
 
 }

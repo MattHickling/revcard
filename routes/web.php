@@ -1,14 +1,15 @@
 <?php
 
+use App\Models\School;
+use App\Models\Student;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\QuizController;
 use App\Http\Controllers\StackController;
 use App\Http\Controllers\SchoolController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\DashboardController;
-use App\Models\School;
-use App\Models\Student;
-use Illuminate\Http\Request;
 
 
 Route::get('/', function () {
@@ -31,6 +32,7 @@ Route::middleware('auth')->group(function () {
 });
 
 
+Route::post('/teacher/comment', [TeacherController::class, 'comment'])->name('teacher.comment');
 
 // Route::middleware(['auth', 'student'])->group(function () {
     Route::post('/quiz/save', [QuizController::class, 'saveQuizResult'])->name('quiz.save');
