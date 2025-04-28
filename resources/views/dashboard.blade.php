@@ -76,10 +76,9 @@
 @if($role == 'teacher')
 <x-app-layout>
     <h2 class="font-bold text-2xl text-gray-800 mb-6">Student Performance Overview</h2>
-
     @foreach($students as $student)
-        <div class="mb-10 bg-white p-6 rounded-lg shadow">
-{{-- {{ dd($student->name) }} --}}
+        <div class="mb-4 bg-white p-6 rounded-lg shadow pb-4">
+            {{-- {{ dd($student->name) }} --}}
             {{-- Student Name --}}
             <h3 class="text-2xl font-bold text-blue-700 mb-6">{{ $student->full_name }}</h3>
 
@@ -131,9 +130,9 @@
                     </button>
                 </form>
             </div>
-
         </div>
-    @endforeach
+@endforeach
+
 </x-app-layout>
 
 @endif
