@@ -126,7 +126,7 @@
                     <input type="hidden" name="student_id" value="{{ $student->id }}">
                     <label for="comment-{{ $student->id }}" class="block mb-2 font-semibold text-gray-700">Teacher Comment:</label>
                     <textarea id="comment-{{ $student->id }}" name="comment" rows="4" class="w-full border-gray-300 rounded-md shadow-sm">{{ $student->teacherComment->comment ?? '' }}</textarea>
-                    <button type="submit" class="mt-3 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
+                    <button type="submit" class="mt-3 bg-blue-600 hover:bg-blue-700 text-black px-4 py-2 rounded">
                         Save Comment
                     </button>
                 </form>
