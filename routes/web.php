@@ -16,8 +16,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-
-// Route::get('/search-schools', [SchoolController::class, 'searchSchools'])->name('search.schools');
 Route::get('/search-schools', [SchoolController::class, 'search'])->name('search.schools');
 
 

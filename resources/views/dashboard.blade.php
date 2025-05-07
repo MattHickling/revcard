@@ -71,63 +71,70 @@
     </script>
 @endrole
 
-{{-- Teacher content --}}
+
 {{-- @role('teacher') --}}
 @if($role == 'teacher')
 <x-app-layout>
     <h2 class="font-bold text-2xl text-gray-800 mb-6">Student Performance Overview</h2>
-
     @foreach($students as $student)
-    <div class="mb-10 bg-white p-6 rounded-lg shadow">
-        {{-- {{ dd($student->name ) }} --}}
-        <h3 class="text-xl font-bold text-blue-800 mb-4">{{ $student->name }}</h3>
+        <div class="mb-4 bg-white p-6 rounded-lg shadow pb-4">
+            {{-- {{ dd($student->name) }} --}}
+            {{-- Student Name --}}
+            <h3 class="text-2xl font-bold text-blue-700 mb-6">{{ $student->full_name }}</h3>
 
-        {{-- Attempts --}}
-        <div class="mb-4">
-            <h4 class="text-lg font-semibold text-gray-700 mb-2">Recent Attempts</h4>
-            @forelse($student->quizAttempts->take(5) as $attempt)
-                <div class="mb-2">
-                    Attempt #{{ $attempt->attempt_number }}:
-                    <strong>{{ round(($attempt->correct_answers / $attempt->total_questions) * 100, 1) }}%</strong>
-                    on {{ $attempt->created_at->format('M d, Y') }}
-                </div>
-            @empty
-                <p class="text-gray-500">No attempts found.</p>
-            @endforelse
-        </div>
-
-        {{-- Answer Breakdown --}}
-        @if($student->latestQuizAttempt && $student->latestQuizAttempt->details->count())
-            <div class="mb-4">
-                <h4 class="font-semibold text-gray-700">Last Attempt Breakdown</h4>
-                <ul>
-                    @foreach($student->latestQuizAttempt->details as $detail)
-                        <li class="bg-gray-100 p-3 rounded mb-2">
-                            <p><strong>Q:</strong> {{ $detail->question->text }}</p>
-                            <p>Answer: {{ $detail->user_answer }} | Correct: {{ $detail->correct_answer }}</p>
-                            <p>
-                                Result: 
-                                {!! $detail->is_correct 
-                                    ? '<span class="text-green-600 font-bold">Correct</span>' 
-                                    : '<span class="text-red-600 font-bold">Wrong</span>' 
-                                !!}
-                            </p>
-                        </li>
-                    @endforeach
-                </ul>
+            {{-- Recent Attempts --}}
+            <div class="mb-6">
+                <h4 class="text-lg font-semibold text-gray-700 mb-4">Recent Attempts</h4>
+                @forelse($student->quizAttempts->take(5) as $attempt)
+                    <div class="bg-gray-100 p-4 rounded mb-2">
+                        Attempt #{{ $attempt->attempt_number }} -
+                        Score: <strong>{{ round(($attempt->correct_answers / $attempt->total_questions) * 100, 1) }}%</strong> 
+                        on {{ $attempt->created_at->format('M d, Y') }}
+                    </div>
+                @empty
+                    <p class="text-gray-500">No attempts found.</p>
+                @endforelse
             </div>
-        @endif
 
-        {{-- Comment Box --}}
-        <form method="POST" action="{{ route('teacher.comment') }}">
-            @csrf
-            <input type="hidden" name="student_id" value="{{ $student->id }}">
-            <textarea name="comment" class="w-full border rounded p-2">{{ $student->teacherComment->comment ?? '' }}</textarea>
-            <button type="submit" class="mt-2 bg-blue-600 text-white px-4 py-2 rounded">Save Comment</button>
-        </form>
-    </div>
+            {{-- Last Attempt Breakdown --}}
+            @if($student->latestQuizAttempt && $student->latestQuizAttempt->details->count())
+                <div class="mb-6">
+                    <h4 class="text-lg font-semibold text-gray-700 mb-4">Last Attempt Breakdown</h4>
+                    <ul class="space-y-3">
+                        @foreach($student->latestQuizAttempt->details as $detail)
+                            <li class="bg-gray-100 p-4 rounded">
+                                <p><strong>Q:</strong> {{ $detail->question->text }}</p>
+                                <p>Answer: {{ $detail->user_answer }} | Correct: {{ $detail->correct_answer }}</p>
+                                <p>
+                                    Result:
+                                    {!! $detail->is_correct 
+                                        ? '<span class="text-green-600 font-bold">Correct</span>' 
+                                        : '<span class="text-red-600 font-bold">Wrong</span>' 
+                                    !!}
+                                </p>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            {{-- Comment Box --}}
+            <div class="mt-6">
+                <form method="POST" action="{{ route('teacher.comment') }}">
+                    @csrf
+                    <input type="hidden" name="student_id" value="{{ $student->id }}">
+                    <label for="comment-{{ $student->id }}" class="block mb-2 font-semibold text-gray-700">Teacher Comment:</label>
+                    <textarea id="comment-{{ $student->id }}" name="comment" rows="4" class="w-full border-gray-300 rounded-md shadow-sm">{{ $student->teacherComment->comment ?? '' }}</textarea>
+                    <button type="submit" class="mt-3 bg-blue-600 hover:bg-blue-700 text-black px-4 py-2 rounded">
+                        Save Comment
+                    </button>
+                </form>
+            </div>
+        </div>
 @endforeach
+
 </x-app-layout>
+
 @endif
 
 

@@ -26,7 +26,6 @@ class DashboardController extends Controller
             'teacherComment'
         ])
         ->get();
-// dd($students);
 
     // Average score by stack 
     $avgByStack = DB::table('quiz_attempts')
