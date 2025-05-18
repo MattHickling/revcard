@@ -42,6 +42,11 @@ Route::post('/teacher/comment', [TeacherController::class, 'comment'])->name('te
     Route::delete('/stacks/{id}', [StackController::class, 'destroy'])->name('delete-stack');
 // });
 
+Route::get('/register/invite/{token}', [RegisterController::class, 'showInviteForm'])->name('register.invited');
+Route::get('/admin/invite', [InviteController::class, 'create'])->name('admin.invite');
+Route::post('/admin/invite', [InviteController::class, 'sendInvite'])->name('admin.invite.send');
+
+
 // Route::middleware(['auth', 'teacher'])->group(function () {
 //     Route::get('/teacher-dashboard', function () {
 //         return view('teacher.dashboard');

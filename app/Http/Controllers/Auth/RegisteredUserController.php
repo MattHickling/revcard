@@ -110,7 +110,17 @@ class RegisteredUserController extends Controller
         return redirect()->route('dashboard')->with('success', 'School associated successfully');
     }
 
-  
+    public function showInviteForm($token)
+    {
+        $invite = Invite::where('token', $token)
+            ->where('expires_at', '>', now())
+            ->firstOrFail();
+    
+        return view('auth.register-invite', [
+            'invite' => $invite,
+        ]);
+    }
+    
 
     
 }
