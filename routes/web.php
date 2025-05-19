@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\QuizController;
 use App\Http\Controllers\StackController;
+use App\Http\Controllers\InviteController;
 use App\Http\Controllers\SchoolController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TeacherController;
