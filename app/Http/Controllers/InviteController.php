@@ -33,7 +33,7 @@ class InviteController extends Controller
     public function create()
     {
         $schools = School::all();
-        return view('emails.invite', compact('schools'));
+        return view('auth.register-invite', compact('schools'));
     }
 
 }

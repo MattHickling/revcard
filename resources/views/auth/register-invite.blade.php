@@ -1,4 +1,4 @@
-@if(auth()->user()->role === 'super_admin')
+{{-- @if(auth()->user()->role === 'super_admin') --}}
     <x-app-layout>
         <h2 class="text-2xl font-bold mb-6">Send User Invite</h2>
 
@@ -22,4 +22,4 @@
             <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Send Invite</button>
         </form>
     </x-app-layout>
-@endif
+{{-- @endif --}}

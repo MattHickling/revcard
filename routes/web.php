@@ -19,7 +19,6 @@ Route::get('/', function () {
 
 Route::get('/search-schools', [SchoolController::class, 'search'])->name('search.schools');
 
-
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -45,7 +44,9 @@ Route::post('/teacher/comment', [TeacherController::class, 'comment'])->name('te
 
 Route::get('/register/invite/{token}', [RegisterController::class, 'showInviteForm'])->name('register.invited');
 Route::get('/admin/invite', [InviteController::class, 'create'])->name('admin.invite');
-Route::post('/admin/invite', [InviteController::class, 'sendInvite'])->name('admin.invite.send');
+Route::post('/admin/invite', [InviteController::class, 'sendInvite'])->name('invites.send');
+
+// Route::post('/admin/invite', [InviteController::class, 'sendInvite'])->name('admin.invite.send');
 
 
 // Route::middleware(['auth', 'teacher'])->group(function () {
