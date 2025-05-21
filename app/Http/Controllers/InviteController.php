@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\School;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class InviteController extends Controller
 {
     public function send(Request $request)
     {
+        
         $request->validate([
             'email' => 'required|email',
             'school_id' => 'required|exists:schools,id',
@@ -33,7 +35,9 @@ class InviteController extends Controller
     public function create()
     {
         $schools = School::all();
-        return view('auth.register-invite', compact('schools'));
+        $teacher = Auth::user();
+        $role = $teacher->role;
+        return view('auth.register-invite', compact('schools', 'role'));
     }
 
 }

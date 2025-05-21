@@ -26,7 +26,7 @@ class RegisteredUserController extends Controller
      */
     public function create(): View
     {
-        $schools = \App\Models\School::all();
+        $schools = School::all();
         return view('auth.register', compact('schools'));    
     }
 
