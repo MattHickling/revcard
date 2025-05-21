@@ -26,7 +26,7 @@ class RegisteredUserController extends Controller
      */
     public function create(): View
     {
-        $schools = \App\Models\School::all();
+        $schools = School::all();
         return view('auth.register', compact('schools'));    
     }
 
@@ -110,7 +110,17 @@ class RegisteredUserController extends Controller
         return redirect()->route('dashboard')->with('success', 'School associated successfully');
     }
 
-  
+    public function showInviteForm($token)
+    {
+        $invite = Invite::where('token', $token)
+            ->where('expires_at', '>', now())
+            ->firstOrFail();
+    
+        return view('auth.register-invite', [
+            'invite' => $invite,
+        ]);
+    }
+    
 
     
 }

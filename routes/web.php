@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\QuizController;
 use App\Http\Controllers\StackController;
+use App\Http\Controllers\InviteController;
 use App\Http\Controllers\SchoolController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TeacherController;
@@ -17,7 +18,6 @@ Route::get('/', function () {
 });
 
 Route::get('/search-schools', [SchoolController::class, 'search'])->name('search.schools');
-
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -41,6 +41,13 @@ Route::post('/teacher/comment', [TeacherController::class, 'comment'])->name('te
     Route::get('/stacks/{stack}', [StackController::class, 'show'])->name('view-stack');
     Route::delete('/stacks/{id}', [StackController::class, 'destroy'])->name('delete-stack');
 // });
+
+Route::get('/register/invite/{token}', [RegisterController::class, 'showInviteForm'])->name('register.invited');
+Route::get('/admin/invite', [InviteController::class, 'create'])->name('admin.invite');
+Route::post('/admin/invite', [InviteController::class, 'sendInvite'])->name('invites.send');
+
+// Route::post('/admin/invite', [InviteController::class, 'sendInvite'])->name('admin.invite.send');
+
 
 // Route::middleware(['auth', 'teacher'])->group(function () {
 //     Route::get('/teacher-dashboard', function () {
