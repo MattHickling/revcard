@@ -10,21 +10,17 @@ class InviteUserMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $token;
+    public $invite; 
 
-    public function __construct($token)
+    public function __construct($invite)
     {
-        dd(__LINE__);
-        $this->token = $token;
+        $this->invite = $invite;
     }
 
     public function build()
     {
-        dd(__LINE__);
-        $url = route('register.invited', ['token' => $this->token]);
-
         return $this->subject('You are invited!')
-                    ->markdown('emails.invite')
-                    ->with(['url' => $url]);
+                    ->view('emails.invite')
+                    ->with(['invite' => $this->invite]);
     }
 }

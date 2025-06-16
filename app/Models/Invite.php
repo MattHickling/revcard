@@ -12,4 +12,9 @@ class Invite extends Model
     {
         return $this->belongsTo(School::class);
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
