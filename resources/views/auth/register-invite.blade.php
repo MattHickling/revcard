@@ -2,24 +2,79 @@
     <x-app-layout>
         <h2 class="text-2xl font-bold mb-6">Send User Invite</h2>
 
-        <form action="{{ route('invites.send') }}" method="POST" class="space-y-4 max-w-lg">
+        <form action="{{ route('invites.send') }}" method="POST" class="space-y-6 max-w-lg mx-auto bg-white p-6 rounded-lg shadow-md">
             @csrf
         
-            <input type="text" name="first_name" placeholder="First Name" required class="w-full border p-2 rounded" />
-            <input type="text" name="last_name" placeholder="Last Name" required class="w-full border p-2 rounded" />
-            <input type="email" name="email" placeholder="User Email" required class="w-full border p-2 rounded" />
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">Send User Invite</h2>
         
-            <label for="school_id">Select School</label>
-            <select id="school_id" name="school_id" required class="w-full border p-2 rounded"></select>
+            {{-- First and Last Name --}}
+            <div class="flex gap-4">
+                <input
+                    type="text"
+                    name="first_name"
+                    placeholder="First Name"
+                    required
+                    class="w-1/2 border border-gray-300 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                />
+                <input
+                    type="text"
+                    name="last_name"
+                    placeholder="Last Name"
+                    required
+                    class="w-1/2 border border-gray-300 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                />
+            </div>
         
-            <select name="role" required class="w-full border p-2 rounded">
+            {{-- Email --}}
+            <input
+                type="email"
+                name="email"
+                placeholder="User Email"
+                required
+                class="w-full border border-gray-300 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+            />
+        
+            {{-- School Select --}}
+            <div>
+                <label for="school_id" class="block text-sm font-semibold text-gray-700 mb-1">Select School</label>
+                <select
+                    id="school_id"
+                    name="school_id"
+                    required
+                    class="w-full border border-gray-300 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                ></select>
+            </div>
+        
+            {{-- Role Select --}}
+            <select
+                name="role"
+                required
+                class="w-full border border-gray-300 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+            >
                 <option value="">Select Role</option>
                 <option value="teacher">Teacher</option>
                 <option value="student">Student</option>
             </select>
         
-            <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Send Invite</button>
+            {{-- Submit Button --}}
+            <button
+                type="submit"
+                class="font-semibold px-6 py-3 rounded-md shadow-md transition duration-200 focus:outline-none"
+                style="
+                    background-color: #60a5fa; /* blue-400 */
+                    color: #ffffff;
+                    border: none;
+                    cursor: pointer;
+                "
+                onmouseover="this.style.backgroundColor='#3b82f6'"  
+                onmouseout="this.style.backgroundColor='#60a5fa'"
+            >
+                Send Invite
+            </button>
+
         </form>
+        
+        
         
     </x-app-layout>
 @endif

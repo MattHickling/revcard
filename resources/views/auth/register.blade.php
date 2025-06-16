@@ -68,11 +68,11 @@
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
-        <label for="school_search">Search for a School</label>
+        {{-- <label for="school_search">Search for a School</label>
         <input type="text" id="school_search" class="block mt-1 w-full" placeholder="Start typing a school name...">
         <input type="hidden" id="school_id" name="school_id" />
 
-        <div id="school_results" class="autocomplete-dropdown" style="display: none; position: absolute;"></div>
+        <div id="school_results" class="autocomplete-dropdown" style="display: none; position: absolute;"></div> --}}
 
         <div class="mt-4">
             <label for="role" class="block text-sm font-medium text-gray-700">Role</label>
