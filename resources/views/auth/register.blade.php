@@ -16,7 +16,6 @@
         border-color: #5c6bc0;
       }
 
-
       #school_search:focus {
         border-color: #3f51b5;
         outline: none;
@@ -51,35 +50,30 @@
     <form method="POST" action="{{ route('register') }}">
         @csrf
 
-        <!-- First Name -->
         <div>
             <x-input-label for="first_name" :value="__('First Name')" />
             <x-text-input id="first_name" class="block mt-1 w-full" type="text" name="first_name" :value="old('first_name')" required autofocus autocomplete="given-name" />
             <x-input-error :messages="$errors->get('first_name')" class="mt-2" />
         </div>
 
-        <!-- Last Name -->
         <div class="mt-4">
             <x-input-label for="last_name" :value="__('Last Name')" />
             <x-text-input id="last_name" class="block mt-1 w-full" type="text" name="last_name" :value="old('last_name')" required autocomplete="family-name" />
             <x-input-error :messages="$errors->get('last_name')" class="mt-2" />
         </div>
 
-        <!-- Email Address -->
         <div class="mt-4">
             <x-input-label for="email" :value="__('Email')" />
             <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
-        <label for="school_search">Search for a School</label>
+        {{-- <label for="school_search">Search for a School</label>
         <input type="text" id="school_search" class="block mt-1 w-full" placeholder="Start typing a school name...">
         <input type="hidden" id="school_id" name="school_id" />
 
-        <!-- Dropdown results -->
-        <div id="school_results" class="autocomplete-dropdown" style="display: none; position: absolute;"></div>
+        <div id="school_results" class="autocomplete-dropdown" style="display: none; position: absolute;"></div> --}}
 
-        <!-- Role -->
         <div class="mt-4">
             <label for="role" class="block text-sm font-medium text-gray-700">Role</label>
             <select id="role" name="role" class="block mt-1 w-full" required>
@@ -89,14 +83,12 @@
             </select>
         </div>
 
-        <!-- Password -->
         <div class="mt-4">
             <x-input-label for="password" :value="__('Password')" />
             <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
 
-        <!-- Confirm Password -->
         <div class="mt-4">
             <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
             <x-text-input id="password_confirmation" class="block mt-1 w-full" type="password" name="password_confirmation" required autocomplete="new-password" />
@@ -131,7 +123,7 @@
         var searchUrl = "{{ route('search.schools') }}"; 
         
         if (query.length >= 3) {
-            console.log('🟢 Searching for:', query);
+            console.log('Searching for:', query);
             
             $.ajax({
                 url: searchUrl,
@@ -147,7 +139,7 @@
                     $('#school_results').html(results).show();
                 },
                 error: function(xhr, status, error) {
-                    console.log('❌ AJAX Error:', error);
+                    console.log('AJAX Error:', error);
                     $('#school_results').hide(); 
                 }
             });

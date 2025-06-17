@@ -1,6 +1,6 @@
 {{-- Admin content --}}
 
-@if($role == 'admin')
+@if(isset($role) && $role == 'admin')
     <x-app-layout>
         <x-slot name="header">
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
@@ -21,13 +21,11 @@
 
 
 {{-- @role('teacher') --}}
-@if($role == 'teacher')
+@if(isset($role) && $role == 'teacher')
 <x-app-layout>
     <h2 class="font-bold text-2xl text-gray-800 mb-6">Student Performance Overview</h2>
     @foreach($students as $student)
         <div class="mb-4 bg-white p-6 rounded-lg shadow pb-4">
-            {{-- {{ dd($student->name) }} --}}
-            {{-- Student Name --}}
             <h3 class="text-2xl font-bold text-blue-700 mb-6">{{ $student->full_name }}</h3>
 
             {{-- Recent Attempts --}}
@@ -88,8 +86,8 @@
 
 
 
-{{-- Student content --}}
-@role('student')
+{{-- Student --}}
+@if(isset($role) && $role == 'student')
     <x-app-layout>
         <x-slot name="header">
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-600 leading-tight">
@@ -100,32 +98,36 @@
         <div class="text-center">
             <a class="btn btn-success mt-2" href="{{ route('add-stack', ['id' => auth()->id()]) }}">Add A New Stack</a>
         </div>
+        @if(isset($openStacks))
+            @if($openStacks->isNotEmpty())
+                <div class="max-w-2xl mx-auto mt-4">
+                    <input type="text" id="searchInput" placeholder="Search flashcard stacks..." class="form-control p-2 border rounded">
+                </div>
+            @endif
+        @endif
+        @if(isset($openStacks))
         @if($openStacks->isNotEmpty())
-            <div class="max-w-2xl mx-auto mt-4">
-                <input type="text" id="searchInput" placeholder="Search flashcard stacks..." class="form-control p-2 border rounded">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+                @foreach($openStacks as $stack)
+                    <div class="stack-card bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6">
+                        <h5 class="text-xl font-bold mb-2">{{ $stack->subject }} - {{ $stack->topic }}</h5>
+                        <p class="text-black">Year: {{ $stack->year_in_school }}</p>
+                        <p class="text-black">Exam Board: {{ $stack->exam_board }}</p>
+
+                        
+                        <div class="flex justify-between items-center">
+                            <a href="{{ route('view-stack', ['stack' => $stack->id]) }}" class="btn btn-primary">Take Quiz</a>
+                            
+                            <form action="{{ route('delete-stack', ['id' => $stack->id]) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this stack?');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger">Delete Stack</button>
+                            </form>
+                        </div>
+                    </div>
+                @endforeach
             </div>
         @endif
-        @if($openStacks->isNotEmpty())
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
-            @foreach($openStacks as $stack)
-                <div class="stack-card bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6">
-                    <h5 class="text-xl font-bold mb-2">{{ $stack->subject }} - {{ $stack->topic }}</h5>
-                    <p class="text-black">Year: {{ $stack->year_in_school }}</p>
-                    <p class="text-black">Exam Board: {{ $stack->exam_board }}</p>
-
-                    
-                    <div class="flex justify-between items-center">
-                        <a href="{{ route('view-stack', ['stack' => $stack->id]) }}" class="btn btn-primary">Take Quiz</a>
-                        
-                        <form action="{{ route('delete-stack', ['id' => $stack->id]) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this stack?');">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger">Delete Stack</button>
-                        </form>
-                    </div>
-                </div>
-            @endforeach
-        </div>
     @else
         <div class="alert alert-info mt-4" role="alert">
             You have no open stacks. Click "Add A New Stack" to create one!
@@ -157,4 +159,4 @@
         });
     });
 </script>
-@endrole
+@endif

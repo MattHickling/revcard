@@ -45,11 +45,11 @@
         </div>
     </form>
     @if (Route::has('register'))
-    <a
-        href="{{ route('register') }}"
-        class="px-4 py-3 text-mg font-semibold text-black"
-    >
-        Register
-    </a>
-@endif
+        {{-- <a
+            href="{{ route('register') }}"
+            class="px-4 py-3 text-mg font-semibold text-black"
+        >
+            Register
+        </a> --}}
+    @endif
 </x-guest-layout>

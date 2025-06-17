@@ -10,7 +10,6 @@ class SchoolController extends Controller
 {
     public function search(Request $request)
     {
-        // dd($request);
         $query = $request->input('query');
         $schools = DB::table('schools')
                         ->where('EstablishmentName', 'LIKE', '%' . $query . '%')
