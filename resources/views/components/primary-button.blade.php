@@ -2,21 +2,20 @@
     'type' => 'submit',
     'class' => '
         inline-flex items-center justify-center
-        px-6 py-3
-        bg-blue-700 text-white
+        px-8 py-4
+        bg-blue-500 text-black
         border border-transparent
-        rounded-xl
-        font-semibold text-sm
-        uppercase tracking-wide
-        hover:bg-white hover:text-blue-700 hover:border-blue-700
-        focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500
-        active:bg-blue-800
+        rounded-2xl
+        font-semibold text-base
+        uppercase tracking-wider
+        hover:bg-white hover:border-blue-500
+        focus:outline-none focus:ring-4 focus:ring-blue-300 focus:ring-offset-2
+        active:bg-blue-600
         transition duration-200 ease-in-out
-        shadow-sm hover:shadow-lg
-        dark:bg-blue-600 dark:hover:bg-white dark:text-white dark:hover:text-blue-900
+        shadow-md hover:shadow-xl
+        dark:bg-blue-500 dark:hover:bg-white dark:text-black dark:hover:text-blue-900
         dark:focus:ring-offset-gray-900
     '
 ]) }}>
     {{ $slot }}
 </button>
-

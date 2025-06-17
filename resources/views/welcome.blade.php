@@ -59,11 +59,13 @@
                         @else
                           
                         <a
-                                href="{{ route('login') }}"
-                                class="px-6 py-3 text-lg font-semibold text-black bg-blue-600 rounded-lg shadow-md transition duration-300 hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-600"
-                            >
-                                Log in
-                            </a>
+                            href="{{ route('login') }}"
+                            class="inline-block px-6 py-3 text-lg font-semibold text-white bg-gradient-to-r from-blue-600 to-indigo-600 rounded-lg shadow-lg transition duration-300 hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-600"
+                            style="text-shadow: 1px 1px 2px rgba(0,0,0,0.3); letter-spacing: 0.5px;"
+                        >
+                            Log in
+                        </a>
+
                 
                             @if (Route::has('register'))
                                 {{-- <a
