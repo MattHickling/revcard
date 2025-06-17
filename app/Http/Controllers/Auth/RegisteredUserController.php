@@ -186,7 +186,7 @@ class RegisteredUserController extends Controller
             ]);
         } else {
             $user->password = bcrypt($request->password);
-            // $user->status = 'active';
+            $user->status = 'active';
             $user->save();
         }
         $invite->delete();
