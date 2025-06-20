@@ -99,7 +99,7 @@ class RegisteredUserController extends Controller
         $user = $invite->user;
 
         $user->password = Hash::make($request->password);
-        $user->status = 'active'; 
+        // $user->status = 'active'; 
         $user->save();
 
         $invite->delete();

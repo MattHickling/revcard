@@ -14,16 +14,20 @@ class InviteController extends Controller
 {
     public function send(Request $request)
     {
-        $request->validate([
-            'email' => 'required|email|unique:users,email',
-            'first_name' => 'required|string',
-            'last_name' => 'required|string',
-            'school_id' => 'required|exists:schools,id',
-            'role' => 'required|in:teacher,student,admin',
-        ]);
-    
+         try {
+            $validated = $request->validate([
+                'email' => 'required|email|unique:users,email',
+                'first_name' => 'required|string',
+                'last_name' => 'required|string',
+                'school_id' => 'required|exists:schools,id',
+                'role' => 'required|in:teacher,student,admin',
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            dd($e->errors());  
+        }
+        
         $token = Str::random(40);
-    
+
         $user = User::create([
             'email' => $request->email,
             'first_name' => $request->first_name,
