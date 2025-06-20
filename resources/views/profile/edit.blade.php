@@ -25,7 +25,7 @@
                 </div>
             </div>
 
-            <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
+            {{-- <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-900">Associate with School</h3>
                 <form action="{{ route('associate.school') }}" method="POST" class="mt-4">
                     @csrf
@@ -49,7 +49,7 @@
 
                     <button type="submit" class="btn btn-primary mt-6">Associate School</button>
                 </form>
-            </div>
+            </div> --}}
         </div>
     </div>
 </x-app-layout>

@@ -1,5 +1,11 @@
 @if(isset($role) && $role == 'admin')
     <x-app-layout>
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+
         <h2 class="text-2xl font-bold mb-6">Send User Invite</h2>
 
         <form action="{{ route('invites.send') }}" method="POST" class="space-y-6 max-w-lg mx-auto bg-white p-6 rounded-lg shadow-md">

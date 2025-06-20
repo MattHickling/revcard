@@ -1,5 +1,4 @@
 {{-- Admin content --}}
-
 @if(isset($role) && $role == 'admin')
     <x-app-layout>
         <x-slot name="header">

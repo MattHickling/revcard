@@ -1,11 +1,27 @@
 @props(['active'])
 
 @php
-$classes = ($active ?? false)
-            ? 'inline-flex items-center px-1 pt-1 border-b-2 border-indigo-400 dark:border-indigo-600 text-sm font-medium leading-5 text-gray-900 dark:text-gray-900 focus:outline-none focus:border-indigo-700 transition duration-150 ease-in-out'
-            : 'inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-900 dark:text-gray-900 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300 dark:hover:border-gray-700 focus:outline-none focus:text-gray-700 dark:focus:text-gray-900 focus:border-gray-900 dark:focus:border-gray-700 transition duration-150 ease-in-out';
+$baseStyle = '
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.5rem;
+    border-bottom: 2px solid transparent;
+    font-size: 1.2rem;
+    font-weight: bolder;
+    line-height: 1.25rem;
+    text-decoration: none;
+    color: #d1d5db;
+    transition: all 0.15s ease-in-out;
+';
+
+$activeStyle = '
+    color: #ffffff;
+    border-bottom-color: #4f46e5;
+';
+
+$style = $baseStyle . ($active ? $activeStyle : '');
 @endphp
 
-<a {{ $attributes->merge(['class' => $classes]) }}>
+<a {{ $attributes->merge(['style' => $style]) }}>
     {{ $slot }}
 </a>
