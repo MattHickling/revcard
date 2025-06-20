@@ -25,7 +25,7 @@ class InviteController extends Controller
         } catch (\Illuminate\Validation\ValidationException $e) {
             dd($e->errors());  
         }
-        
+
         $token = Str::random(40);
 
         $user = User::create([
@@ -48,7 +48,6 @@ class InviteController extends Controller
         ]);
         
         Mail::to($request->email)->send(new InviteUserMail($invite));
-
         return back()->with('success', 'Invitation sent!');
     }
     
