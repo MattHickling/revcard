@@ -23,7 +23,7 @@ class InviteController extends Controller
                 'role' => 'required|in:teacher,student,admin',
             ]);
         } catch (\Illuminate\Validation\ValidationException $e) {
-            dd($e->errors());  
+            return response()->json(['errors' => $e->errors()], 422);
         }
 
         $token = Str::random(40);
