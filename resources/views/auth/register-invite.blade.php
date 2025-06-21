@@ -9,7 +9,6 @@
     </div>
 @endif
 
-
 @if(isset($role) && $role == 'admin')
     <x-app-layout>
         @if (session('success'))
@@ -23,9 +22,7 @@
         <form action="{{ route('invites.send') }}" method="POST" class="space-y-6 max-w-lg mx-auto bg-white p-6 rounded-lg shadow-md">
             @csrf
         
-                   <h2 style="font-size: 1.5rem; font-weight: bolder; margin-bottom: 0.5rem;"><b>Send User Invite</b></h2>
-
-        
+            <h2 style="font-size: 1.5rem; font-weight: bolder; margin-bottom: 0.5rem;"><b>Send User Invite</b></h2>  
             {{-- First and Last Name --}}
             <input
                 type="text"
@@ -54,9 +51,6 @@
                 value="{{ old('email') }}"
                 class="w-full border border-gray-300 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
             />
-        
-            {{-- Password --}}
-
         
             {{-- School Select --}}
             <div>
@@ -97,9 +91,6 @@
             </button>
 
         </form>
-        
-        
-        
     </x-app-layout>
 @endif
 
@@ -115,30 +106,30 @@
   });
 
 
-const schoolSearchUrl = "{{ url('/ajax/search-schools') }}";
+    const schoolSearchUrl = "{{ url('/ajax/search-schools') }}";
 
-schoolSelect.addEventListener('search', function(event) {
-    const searchTerm = event.detail.value;
+    schoolSelect.addEventListener('search', function(event) {
+        const searchTerm = event.detail.value;
 
-    if (!searchTerm || searchTerm.length < 2) {
-      return;
-    }
+        if (!searchTerm || searchTerm.length < 2) {
+        return;
+        }
 
-    fetch(`${schoolSearchUrl}?query=${encodeURIComponent(searchTerm)}`)
-      .then(response => response.json())
-      .then(data => {
-        choices.clearChoices();
+        fetch(`${schoolSearchUrl}?query=${encodeURIComponent(searchTerm)}`)
+        .then(response => response.json())
+        .then(data => {
+            choices.clearChoices();
 
-        const formattedChoices = data.map(school => ({
-          value: school.id,
-          label: school.EstablishmentName
-        }));
+            const formattedChoices = data.map(school => ({
+            value: school.id,
+            label: school.EstablishmentName
+            }));
 
-        choices.setChoices(formattedChoices, 'value', 'label', true);
-      })
-      .catch(err => {
-        console.error('Failed to fetch schools:', err);
-      });
-});
+            choices.setChoices(formattedChoices, 'value', 'label', true);
+        })
+        .catch(err => {
+            console.error('Failed to fetch schools:', err);
+        });
+    });
 
 </script>
