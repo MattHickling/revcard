@@ -14,18 +14,15 @@ class InviteController extends Controller
 {
     public function send(Request $request)
     {
-         try {
-            $validated = $request->validate([
-                'email' => 'required|email|unique:users,email',
-                'first_name' => 'required|string',
-                'last_name' => 'required|string',
-                'school_id' => 'required|exists:schools,id',
-                'role' => 'required|in:teacher,student,admin',
-            ]);
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            return response()->json(['errors' => $e->errors()], 422);
-        }
-
+         
+        $validated = $request->validate([
+            'email' => 'required|email|unique:users,email',
+            'first_name' => 'required|string',
+            'last_name' => 'required|string',
+            'school_id' => 'required|exists:schools,id',
+            'role' => 'required|in:teacher,student,admin',
+        ]);
+        
         $token = Str::random(40);
 
         $user = User::create([
